@@ -201,6 +201,7 @@ pip install --upgrade pip
  echo_green ">> Installing GenRL..."
 pip install gensyn-genrl==${GENRL_TAG}
 pip install reasoning-gym>=0.1.20 # for reasoning gym env
+pip install trl==0.19.1
 pip install hivemind@git+https://github.com/gensyn-ai/hivemind@639c964a8019de63135a2594663b5bec8e5356dd # We need the latest, 1.1.11 is broken
 
 
