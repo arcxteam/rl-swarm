@@ -51,7 +51,7 @@ RUN ./install_pip.sh
 ENV PATH="/home/gensyn/.pyenv/shims:/home/gensyn/.pyenv/bin:$NVM_DIR/versions/node/v${NODE_VERSION}/bin/:${PATH}"
 
 COPY --chown=gensyn ./modal-login /home/gensyn/rl_swarm/modal-login
-RUN cd /home/gensyn/rl_swarm/modal-login && yarn config set network-timeout 300000 -g && yarn install --immutable --network-concurrency 1 --check-files && yarn build
+RUN cd /home/gensyn/rl_swarm/modal-login && yarn config set network-timeout 200000 -g && yarn install --immutable --network-concurrency 1 --check-files && yarn build
 
 RUN pip install gensyn-genrl==0.1.6
 RUN pip install reasoning-gym>=0.1.20 # for reasoning gym env
