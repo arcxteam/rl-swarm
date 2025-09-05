@@ -36,7 +36,7 @@ if [ -n "$DOCKER" ]; then
     )
 
     for volume in ${volumes[@]}; do
-        sudo chown -R 1001:1001 $volume
+        chown -R 1001:1001 $volume
     done
 fi
 
@@ -124,9 +124,9 @@ if [ "$CONNECT_TO_TESTNET" = true ]; then
         # Detect Ubuntu (including WSL Ubuntu) and install Yarn accordingly
         if grep -qi "ubuntu" /etc/os-release 2> /dev/null || uname -r | grep -qi "microsoft"; then
             echo "Detected Ubuntu or WSL Ubuntu. Installing Yarn via apt..."
-            curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-            echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-            sudo apt update && sudo apt install -y yarn
+            curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+            echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+            apt update && apt install -y yarn
         else
             echo "Yarn not found. Installing Yarn globally with npm (no profile edits)…"
             # This lands in $NVM_DIR/versions/node/<ver>/bin which is already on PATH
@@ -226,7 +226,7 @@ fi
 
 if [ -n "$DOCKER" ]; then
     # Make it easier to edit the configs on Linux systems.
-    sudo chmod -R 0777 /home/gensyn/rl_swarm/configs
+    chmod -R 0777 /home/gensyn/rl_swarm/configs
 fi
 
 echo_green ">> Done!"
