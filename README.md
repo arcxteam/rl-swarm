@@ -9,16 +9,14 @@ Currently in the new recent update, Gensyn testnet is running and training the r
 
 **1. Update System Packages**
 ```bash
-apt update && apt upgrade -y \
-apt install screen curl ufw nload tree iptables build-essential git wget lz4 jq make gcc nano automake autoconf tmux htop nvme-cli libgbm1 pkg-config libssl-dev libleveldb-dev tar clang bsdmainutils ncdu unzip libleveldb-dev  -y
+apt update && apt upgrade -y && \
+apt install screen curl ufw nload tree iptables git-all wget lz4 jq make gcc nano automake autoconf htop tmux nvme-cli libgbm1 protobuf-compiler python3 python3-pip python3-venv python3-dev python3-setuptools python3-wheel \
+tar clang bsdmainutils ncdu unzip build-essential pkg-config libssl-dev libleveldb-dev \
+net-tools iproute2 strace lsof tcpdump glances rsync ca-certificates gnupg zstd \
+libffi-dev libsqlite3-dev cmake libtool uuid-dev -y
 ```
 
-**3. Install Python**
-```bash
-apt install python3 python3-pip python3-venv python3-dev -y
-```
-
-**4. Install Node**
+**2. Install Node**
 ```
 # Install NVM (Node Version Manager)
 echo "Installing NVM (Node Version Manager)..."
@@ -77,15 +75,15 @@ echo "PM2 version: $(pm2 -v)"
 echo "Yarn versio: $(yarn -v)"
 ```
 
-## 3) Clone the Repository
+## Clone the Repository
 ```bash
 git clone https://github.com/arcxteam/rl-swarm.git
 ```
 
 ---
 
-## 4) Run the swarm
-* If you are an **existing user**, you must have your node's `swarm.pem` present in `rl-swarm` directory before starting the node, follow [Recover](#recover) instructions if need to recover `swarm.pem` file
+## Run the swarm
+* If you are an **existing user**, you must have your node's `swarm.pem` present in `rl-swarm` directory before starting the node, follow instructions if need to recover `swarm.pem` file
 * Use on of the `Bash` or `Docker` methods to run your node
 
 ### CLI Method (GPU)
