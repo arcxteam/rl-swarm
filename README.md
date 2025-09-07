@@ -10,7 +10,7 @@ Currently in the new recent update, Gensyn testnet is running and training the r
 **1. Update System Packages**
 ```bash
 apt update && apt upgrade -y && \
-apt install screen curl ufw nload tree iptables git-all wget lz4 jq make gcc nano automake autoconf htop tmux nvme-cli libgbm1 protobuf-compiler python3 python3-pip python3-venv python3-dev python3-setuptools python3-wheel \
+apt install screen curl ufw nload tree iptables git-all wget lz4 jq make gcc nano automake autoconf htop tmux nvme-cli libgbm1 protobuf-compiler python3 python3-pip python3-venv python3-dev python3-setuptools python3-wheel speedtest-cli \
 tar clang bsdmainutils ncdu unzip build-essential pkg-config libssl-dev libleveldb-dev \
 net-tools iproute2 strace lsof tcpdump glances rsync ca-certificates gnupg zstd \
 libffi-dev libsqlite3-dev cmake libtool uuid-dev -y
