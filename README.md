@@ -17,56 +17,49 @@ speedtest-cli ca-certificates libffi-dev libsqlite3-dev -y
 
 **2. Install Node**
 ```
-# Install NVM (Node Version Manager)
+# Install NVM
 echo "Installing NVM (Node Version Manager)..."
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
 
-# Muat ulang konfigurasi shell
 source ~/.bashrc
 
-# Install Node.js versi 22.18.0 menggunakan NVM
+# Install Node.js
 echo "Installing Node.js v22.18.0 (LTS)..."
 nvm install 22.18.0
 nvm use 22.18.0
 nvm alias default 22.18.0
 
-# Verifikasi instalasi Node.js dan npm
 echo "Verifying Node.js and npm installation..."
 node -v
 npm -v
 
-# Install PM2 versi terbaru menggunakan npm
+# Install PM2
 echo "Installing PM2..."
 npm install -g pm2
 
-# Verifikasi instalasi PM2
 echo "Verifying PM2 installation..."
 pm2 -v
 
-# Install Yarn menggunakan npm
+# Install Yarn
 echo "Installing Yarn..."
 npm install -g yarn
 
-# Verifikasi instalasi Yarn
 echo "Verifying Yarn installation..."
 yarn -v
 
-# Tambahkan NVM dan Node.js ke dalam bash profile untuk pemuatan otomatis saat login
 echo "Adding NVM and Node.js to .bash_profile..."
 
 echo "export NVM_DIR=\"$HOME/.nvm\"" >> ~/.bash_profile
 echo "[ -s \"$NVM_DIR/nvm.sh\" ] && \. \"$NVM_DIR/nvm.sh\"" >> ~/.bash_profile
 echo "[ -s \"$NVM_DIR/bash_completion\" ] && \. \"$NVM_DIR/bash_completion\"" >> ~/.bash_profile
 
-# Pastikan NVM dan Node.js dimuat ketika shell baru dibuka
 source ~/.bash_profile
 
-# Ubah izin direktori dan file instalasi agar dapat diakses
 echo "Setting proper permissions for NVM and Node.js installation..."
 chown -R $USER:$USER ~/.nvm
 chmod -R 755 ~/.nvm
 
-# Tampilkan hasil instalasi
+# Ready version help
 echo "Installation completed successfully."
 echo "Node.js version: $(node -v)"
 echo "Npm version: $(npm -v)"
@@ -80,10 +73,6 @@ git clone https://github.com/arcxteam/rl-swarm.git
 ```
 
 ---
-
-## Run the swarm
-* If you are an **existing user**, you must have your node's `swarm.pem` present in `rl-swarm` directory before starting the node, follow instructions if need to recover `swarm.pem` file
-* Use on of the `Bash` or `Docker` methods to run your node
 
 ### CLI Method (GPU)
 1- Open a screen to run it in background
