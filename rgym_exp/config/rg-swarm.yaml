@@ -14,7 +14,7 @@ training:
   max_round: 1000000
   max_stage: 1
   hf_push_frequency: 1
-  num_generations: 3
+  num_generations: 2
   num_transplant_trees: 1
   seed: 42
   dtype: 'bfloat16'
