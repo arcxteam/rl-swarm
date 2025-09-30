@@ -15,13 +15,24 @@ tar clang ncdu unzip build-essential pkg-config libssl-dev libleveldb-dev \
 speedtest-cli ca-certificates libffi-dev libsqlite3-dev -y
 ```
 
-**2. Install Node**
+**2. Install Node.js, Npm, Yarn, and PM2**
 ```
+#!/usr/bin/env bash
+
+# -------------------------------------------------
+# Name: node‑setup.sh
+# Description: Bootstrap install Node.js, npm, Yarn, and PM2
+# Platform: Linux (Ubuntu/Debian)
+# -------------------------------------------------
+
 # Install NVM
 echo "Installing NVM (Node Version Manager)..."
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 
-source ~/.bashrc
+# load environment NVM
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
 # Install Node.js
 echo "Installing Node.js v22.18.0 (LTS)..."
@@ -47,13 +58,16 @@ npm install -g yarn
 echo "Verifying Yarn installation..."
 yarn -v
 
-echo "Adding NVM and Node.js to .bash_profile..."
+# add to .bashrc
+echo "Adding NVM to .bashrc..."
+cat <<EOF >> ~/.bashrc
+export NVM_DIR="$HOME/.nvm"
+[ -s "\$NVM_DIR/nvm.sh" ] && \. "\$NVM_DIR/nvm.sh"
+[ -s "\$NVM_DIR/bash_completion" ] && \. "\$NVM_DIR/bash_completion"
+EOF
 
-echo "export NVM_DIR=\"$HOME/.nvm\"" >> ~/.bash_profile
-echo "[ -s \"$NVM_DIR/nvm.sh\" ] && \. \"$NVM_DIR/nvm.sh\"" >> ~/.bash_profile
-echo "[ -s \"$NVM_DIR/bash_completion\" ] && \. \"$NVM_DIR/bash_completion\"" >> ~/.bash_profile
-
-source ~/.bash_profile
+# reload .bashrc
+source ~/.bashrc
 
 echo "Setting proper permissions for NVM and Node.js installation..."
 chown -R $USER:$USER ~/.nvm
@@ -64,7 +78,7 @@ echo "Installation completed successfully."
 echo "Node.js version: $(node -v)"
 echo "Npm version: $(npm -v)"
 echo "PM2 version: $(pm2 -v)"
-echo "Yarn versio: $(yarn -v)"
+echo "Yarn version: $(yarn -v)"
 ```
 
 ## Clone the Repository
