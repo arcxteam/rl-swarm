@@ -83,7 +83,7 @@ echo "Yarn version: $(yarn -v)"
 
 ## Clone the Repository
 ```bash
-git clone https://github.com/arcxteam/rl-swarm.git
+git clone -b custom-port https://github.com/arcxteam/rl-swarm.git
 ```
 
 ---
