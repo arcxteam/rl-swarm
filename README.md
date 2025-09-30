@@ -1,3 +1,6 @@
+> [!NOTE]
+> THIS CUSTOM PORT FROM 3000 to 5000 (localhost) 
+
 Currently in the new recent update, Gensyn testnet is running and training the reasoning-gym swarm datasets on the Testnet. This swarm is supporting the current list of default models:
 
 - Gensyn/Qwen2.5-0.5B-Instruct
