@@ -34,7 +34,7 @@ WORKDIR /home/gensyn
 USER gensyn
 
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
-ENV NVM_DIR=/home/gensyn/.nvm NODE_VERSION=22.16.0
+ENV NVM_DIR=/home/gensyn/.nvm NODE_VERSION=22.18.0
 RUN . "$NVM_DIR/nvm.sh" && nvm install ${NODE_VERSION} && \
     . "$NVM_DIR/nvm.sh" && nvm use v${NODE_VERSION} && \
     . "$NVM_DIR/nvm.sh" && nvm alias default v${NODE_VERSION} && \
@@ -53,7 +53,7 @@ ENV PATH="/home/gensyn/.pyenv/shims:/home/gensyn/.pyenv/bin:$NVM_DIR/versions/no
 COPY --chown=gensyn ./modal-login /home/gensyn/rl_swarm/modal-login
 RUN cd /home/gensyn/rl_swarm/modal-login && yarn config set network-timeout 200000 -g && yarn install --immutable --network-concurrency 1 --check-files && yarn build
 
-RUN pip install gensyn-genrl==0.1.8
+RUN pip install gensyn-genrl==0.1.9
 RUN pip install reasoning-gym>=0.1.20 # for reasoning gym env
 RUN pip install trl==0.19.1
 RUN pip install hivemind@git+https://github.com/gensyn-ai/hivemind@639c964a8019de63135a2594663b5bec8e5356dd # We need the latest, 1.1.11 is broken
