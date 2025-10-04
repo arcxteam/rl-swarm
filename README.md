@@ -92,7 +92,7 @@ source .venv/bin/activate
 
 ### 2. Docker (Container)
 
-**A. Install Docker & Compose → <mark>if not yet</mark>**
+**A. Install Docker & Compose → <mark>if the rental was support & use Ubuntu VM</mark>**
 
 ```bash
 curl -sSL https://raw.githubusercontent.com/arcxteam/succinct-prover/refs/heads/main/docker.sh | sudo bash
