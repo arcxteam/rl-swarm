@@ -1,103 +1,85 @@
-Currently in the new recent update, Gensyn testnet is running and training the reasoning-gym swarm datasets on the Testnet. This swarm is supporting the current list of default models:
+> [!NOTE]
+> **Always Latest Update:** Currently in the new recent update, This was modify config by me for Gensyn training LLmodels thats effective for any **low vRAM GPU** resources like **RTX Series 20xx, 30xx, 40xx, A1xx, A2xx, A4xx** is same optimize any swarm inferences (originally).
 
-- Gensyn/Qwen2.5-0.5B-Instruct
-- Qwen/Qwen3-0.6B
-- nvidia/AceInstruct-1.5B
-- dnotitia/Smoothie-Qwen3-1.7B
-- Gensyn/Qwen2.5-1.5B-Instruct
+[![Gensyn](https://img.shields.io/github/v/release/gensyn-ai/rl-swarm?label=OfficialUpdate&color=blue)](https://github.com/gensyn-ai/rl-swarm/releases)
 
+## System Requirements
+
+![VPS](https://img.shields.io/badge/CLOUD_GPU_SERVER-232F3E?style=for-the-badge&logo=digitalocean&logoColor=white)
+![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
+![Docker](https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white)
+
+| Requirement     | Detail                 |
+| :----------     | :--------------------  |
+| **Linux**       | Ubuntu 20 - 22 - 24 LTS          |
+| **Windows**     | WSL - Ubuntu                     |
+| **CPU**         | vCores 10 with 12GB RAM - more   |
+| **VRAM GPU**    | Min 6GB - more VRAM              |
+| **GPU-Series**  | GTX 1080 with CUDA 12.4-12.8 - RTX series |
+| **STORAGE**     | Pass-lock 98GB - 99GB              |
+
+> **Note: Its just a imagine, you can choose anything your take. But i can sharing any Tips & Trick if your rent cloud GPU to [https://octa.space](https://octa.space/?ref=rTXHXwn7D96) I'm not promoter choose this my principals rent any low-cost, its very cheaper than rental GPU competitors. For Tips & Trick read here https://github.com/arcxteam/octa-rental-gpu**
+
+### Basically, if you rent a GPU with a minimum of 6GB or even 8-12-16-24GB of VRAM, you can run other nodes because only 4-5GB of VRAM will be used for this GENSYN with the configuration I modified.
+
+![photo_6271671078992153653_w](https://github.com/user-attachments/assets/adf9e6cc-1125-4a75-b000-cc1b0c1e1541)
+
+## Modify Configs
+- `rgym_exp/config/rg-swarm.yaml` → <mark>support any GPU</mark>
+- `rgym_exp/src/datasets.yaml` → <mark>boosting rewards</mark>
+- `run_rl_swarm.sh` → <mark>all running</mark>
+- `other configs` → <mark>latest tags for compatible</mark>
+
+## Official Support LLModels
+- `Gensyn/Qwen2.5-0.5B-Instruct`  → <mark>Recommend</mark>
+- `Qwen/Qwen3-0.6B` → <mark>Recommend</mark>
+- `nvidia/AceInstruct-1.5B`
+- `dnotitia/Smoothie-Qwen3-1.7B`
+- `Gensyn/Qwen2.5-1.5B-Instruct`
+
+## Installation Setup
 
 **1. Update System Packages**
 ```bash
 apt update && apt upgrade -y && \
-apt install screen curl ufw nload tree iptables git wget lz4 jq make gcc nano automake autoconf htop tmux libgbm1 protobuf-compiler python3 python3-pip python3-venv python3-dev python3-setuptools \
+apt install screen curl ufw nload tree iptables git wget lz4 jq make gcc nano automake autoconf \
+htop tmux libgbm1 protobuf-compiler python3 python3-pip python3-venv python3-dev python3-setuptools \
 tar clang ncdu unzip build-essential pkg-config libssl-dev libleveldb-dev \
 speedtest-cli ca-certificates libffi-dev libsqlite3-dev -y
 ```
 
-**2. Install Node.js, Npm, Yarn, and PM2**
+**2. Install NODE.JS - NPM - YARN - PM2**
 ```
-#!/usr/bin/env bash
-
-# -------------------------------------------------
-# Name: node‑setup.sh
-# Description: Bootstrap install Node.js, npm, Yarn, and PM2
-# Platform: Linux (Ubuntu/Debian)
-# -------------------------------------------------
-
-# Install NVM
-echo "Installing NVM (Node Version Manager)..."
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-
-# load environment NVM
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-
-# Install Node.js
-echo "Installing Node.js v22.18.0 (LTS)..."
-nvm install 22.18.0
-nvm use 22.18.0
-nvm alias default 22.18.0
-
-echo "Verifying Node.js and npm installation..."
-node -v
-npm -v
-
-# Install PM2
-echo "Installing PM2..."
-npm install -g pm2
-
-echo "Verifying PM2 installation..."
-pm2 -v
-
-# Install Yarn
-echo "Installing Yarn..."
-npm install -g yarn
-
-echo "Verifying Yarn installation..."
-yarn -v
-
-# add to .bashrc
-echo "Adding NVM to .bashrc..."
-cat <<EOF >> ~/.bashrc
-export NVM_DIR="$HOME/.nvm"
-[ -s "\$NVM_DIR/nvm.sh" ] && \. "\$NVM_DIR/nvm.sh"
-[ -s "\$NVM_DIR/bash_completion" ] && \. "\$NVM_DIR/bash_completion"
-EOF
-
-# reload .bashrc
-source ~/.bashrc
-
-echo "Setting proper permissions for NVM and Node.js installation..."
-chown -R $USER:$USER ~/.nvm
-chmod -R 755 ~/.nvm
-
-# Ready version help
-echo "Installation completed successfully."
-echo "Node.js version: $(node -v)"
-echo "Npm version: $(npm -v)"
-echo "PM2 version: $(pm2 -v)"
-echo "Yarn version: $(yarn -v)"
+source <(wget -qO- https://raw.githubusercontent.com/arcxteam/w-ai-wombo/main/nodejs.sh)
 ```
 
-## Clone the Repository
+**3. Clone the Repository**
 ```bash
-git clone https://github.com/arcxteam/rl-swarm.git
+git clone https://github.com/arcxteam/rl-swarm.git && cd rl-swarm
 ```
 
----
+## Running Gensyn
 
-### CLI Method (GPU)
-1- Open a screen to run it in background
-```bash
-screen -S gensyn
-```
-2- Get into the `rl-swarm` directory
+### 1. CLI shell (sh)
+
+**A. If you run with <mark>OctaSpace GPU</mark> is default with Tmux/Termux Container**
+- Quick tips: before deploy in (Expose HTTP Ports) input as `3000` Tips&Trick [Octaspace](https://github.com/arcxteam/octa-rental-gpu)
+- Create new sessions `CTRL+B+C`
+- Go to sessions `tmux attach`
+- List sessions `CTRL+B+W`
+- Navigate sessions `scroll up ↑ down ↓ or click any sessions & then enter`
+- Close with run background `CTRL+B+D`
+
+**B. If you run with <mark>Other Rent GPU</mark> create Screen sessions**
+- Create sessions `screen -S gensyn`
+- Close sessions `CTRL+A+D`
+- Go to sessions `screen -r gensyn`
+
+**C. Get into the `rl-swarm` directory**
 ```
 cd rl-swarm
 ```
-3- Install swarm
+**D. Virtual Python & Run Gensyn Swarm**
 ```bash
 python3 -m venv .venv
 
@@ -108,8 +90,15 @@ source .venv/bin/activate
 ./run_rl_swarm.sh
 ```
 
-## Install swarm build docker
-* Mac or CPU-Only VPS
+### 2. Docker (Container)
+
+**A. Install Docker & Compose → <mark>if not yet</mark>**
+
+```bash
+curl -sSL https://raw.githubusercontent.com/arcxteam/succinct-prover/refs/heads/main/docker.sh | sudo bash
+```
+**B. Install swarm build docker**
+* CPU
 ```bash
 docker compose run --rm --build -Pit swarm-cpu
 ```
@@ -119,19 +108,18 @@ docker compose run --rm --build -Pit swarm-cpu
 docker compose run --rm --build -Pit swarm-gpu
 ```
 
-* **GPU Cloud & VPS Users: Tunnel to external URL:**
-  * 1- Open a new terminal
-  * 2- Install **localtunnel**:
-    ```
-    npm install -g localtunnel
-    ```
-  * 3- Get a password:
-    ```
-    curl https://loca.lt/mytunnelpassword
-    ```
-  * The password is actually your VPS IP
-  * 4- Get URL
-    ```
-    lt --port 3000
-    ```
-  * Visit the prompted url, and enter your password to access Gensyn login page
+## Other GPU Cloud & VPS Users: Login Gensyn Dashboard
+- Open a new terminal
+- Install localtunnel
+```
+npm install -g localtunnel
+```
+- The password is actually your VPS-IP
+```
+curl ifconfig.me && echo
+```
+- Get URL access
+```
+lt --port 3000
+```
+**Visit the prompted url, and enter your password to access Gensyn login page**
