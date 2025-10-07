@@ -44,7 +44,7 @@
 apt update && apt upgrade -y && \
 apt install screen curl ufw nload tree iptables git wget lz4 jq make gcc nano automake autoconf \
 htop tmux libgbm1 protobuf-compiler python3 python3-pip python3-venv python3-dev python3-setuptools \
-tar clang ncdu unzip build-essential pkg-config libssl-dev libleveldb-dev \
+tar clang nethogs ncdu unzip build-essential pkg-config libssl-dev libleveldb-dev \
 speedtest-cli ca-certificates libffi-dev libsqlite3-dev -y
 ```
 
@@ -60,10 +60,10 @@ git clone https://github.com/arcxteam/rl-swarm.git && cd rl-swarm
 
 ## Running Gensyn
 
-### 1. CLI shell (sh)
+### 1. CLI (shell/sh)
 
 **A. If you run with <mark>OctaSpace GPU</mark> is default with Tmux/Termux Container**
-- Quick tips: before deploy in (Expose HTTP Ports) input as `3000` Tips&Trick [Octaspace](https://github.com/arcxteam/octa-rental-gpu)
+- Quick: before deploy in (Expose HTTP Ports) input as `3000` will create localhost no setup need Tips-Trick read [Octaspace](https://github.com/arcxteam/octa-rental-gpu)
 - Create new sessions `CTRL+B+C`
 - Go to sessions `tmux attach`
 - List sessions `CTRL+B+W`
@@ -108,7 +108,7 @@ docker compose run --rm --build -Pit swarm-cpu
 docker compose run --rm --build -Pit swarm-gpu
 ```
 
-## Other GPU Cloud & VPS Users: Login Gensyn Dashboard
+## Other GPU Cloud & VPS Users: Setup port localhost:3000 
 - Open a new terminal
 - Install localtunnel
 ```
