@@ -33,9 +33,9 @@
 ## Official Support LLModels
 - `Gensyn/Qwen2.5-0.5B-Instruct`  → <mark>Recommend</mark>
 - `Qwen/Qwen3-0.6B` → <mark>Recommend</mark>
-- `nvidia/AceInstruct-1.5B`
-- `dnotitia/Smoothie-Qwen3-1.7B`
-- `Gensyn/Qwen2.5-1.5B-Instruct`
+- `nvidia/AceInstruct-1.5B` → <mark>Dont Use, boost rewards was config </mark>
+- `dnotitia/Smoothie-Qwen3-1.7B` → <mark>Dont Use, boost rewards was config </mark>
+- `Gensyn/Qwen2.5-1.5B-Instruct` → <mark>Dont Use, boost rewards was config </mark>
 
 ## Installation Setup
 
@@ -53,17 +53,19 @@ speedtest-cli ca-certificates libffi-dev libsqlite3-dev -y
 source <(wget -qO- https://raw.githubusercontent.com/arcxteam/w-ai-wombo/main/nodejs.sh)
 ```
 
-**3. Clone the Repository**
+**3. Clone Repository**
 ```bash
 git clone https://github.com/arcxteam/rl-swarm.git && cd rl-swarm
 ```
 
 ## Running Gensyn
 
-### 1. CLI (shell/sh)
+### 1. CLI (Shell/sh)
 
-**A. If you run with <mark>OctaSpace GPU</mark> is default with Tmux/Termux Container**
-- Quick: before deploy in (Expose HTTP Ports) input as `3000` will create localhost no setup need Tips-Trick read [Octaspace](https://github.com/arcxteam/octa-rental-gpu)
+**A. If you run with <mark>OctaSpace cloud GPU</mark> is default with Tmux/Termux Container**
+- Full comprehensif guide tips & trick read here [Octaspace](https://github.com/arcxteam/octa-rental-gpu)
+- Quick-1: Always rent with this template **UBUNTU 22.04 LTS** dont use another template
+- Quick-2: Always deploy in coloum **(Expose HTTP Ports)** input port https **3000** will create localhost services for gensyn login
 - Create new sessions `CTRL+B+C`
 - Go to sessions `tmux attach`
 - List sessions `CTRL+B+W`
@@ -92,7 +94,7 @@ source .venv/bin/activate
 
 ### 2. Docker (Container)
 
-**A. Install Docker & Compose → <mark>if the rental was support & use Ubuntu VM</mark>**
+**A. Install Docker & Compose → <mark>if the rent was support & use Ubuntu VM</mark>**
 
 ```bash
 curl -sSL https://raw.githubusercontent.com/arcxteam/succinct-prover/refs/heads/main/docker.sh | sudo bash
@@ -108,7 +110,7 @@ docker compose run --rm --build -Pit swarm-cpu
 docker compose run --rm --build -Pit swarm-gpu
 ```
 
-## Other GPU Cloud & VPS Users: Setup port localhost:3000 
+## Other Cloud GPU & VPS Users: Setup Manual localhost:3000 
 - Open a new terminal
 - Install localtunnel
 ```
