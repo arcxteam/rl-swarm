@@ -1,4 +1,4 @@
-#  mathematical reasoning with complex tasks - weighted sampling
+#  training; flexibility reasoning of complex tasks - weighted sampling
 
 size: 1000
 seed: 42
@@ -54,7 +54,7 @@ datasets:
       max_value: 100
       min_factor: 2
       max_factor: 100
-      styles: ["plain", "latex_frac", "latex_dfrac"]
+      styles: ["plain", "latex_frac", "latex_dfrac"] # mixed_fraction
       seed: 1236
       size: 500
 
