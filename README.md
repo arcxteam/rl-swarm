@@ -1,7 +1,7 @@
 > [!NOTE]
 > **Always Latest Update:** Currently in the new recent update, This was modify config by me for Gensyn training LLmodels thats effective for any **low vRAM GPU** resources like **RTX Series 20xx, 30xx, 40xx, A1xx, A2xx, A4xx** is same optimize any swarm inferences (originally).
 
-[![Gensyn](https://img.shields.io/github/v/release/gensyn-ai/rl-swarm?label=OfficialUpdate&color=blue)](https://github.com/gensyn-ai/rl-swarm/releases)
+[![Gensyn](https://img.shields.io/github/v/release/gensyn-ai/rl-swarm?label=Official-Version&color=blue)](https://github.com/gensyn-ai/rl-swarm/releases)
 
 ## System Requirements
 
@@ -18,24 +18,26 @@
 | **GPU-Series**  | GTX 1080 with CUDA 12.4-12.8 - RTX series |
 | **STORAGE**     | Pass-lock 98GB - 99GB              |
 
-> **Note: Its just a imagine, you can choose anything your take. But i can sharing any Tips & Trick if your rent cloud GPU to [https://octa.space](https://octa.space/?ref=rTXHXwn7D96) I'm not promoter choose this my principals rent any low-cost, its very cheaper than rental GPU competitors. For Tips & Trick read here https://github.com/arcxteam/octa-rental-gpu**
+> **Note: Its just a imagine, you can choose anything your take. But i can sharing any tips if your rent cloud GPU to [https://octa.space](https://octa.space/?ref=rTXHXwn7D96) I'm not promoter choose this my principals rent any low-cost, its very cheaper than rental GPU competitors. For tips & trick read... https://github.com/arcxteam/octa-rental-gpu**
 
 ### Basically, if you rent a GPU with a minimum of 6GB or even 8-12-16-24GB of VRAM, you can run other nodes because only 4-5GB of VRAM will be used for this GENSYN with the configuration I modified.
 
 ![photo_6271671078992153653_w](https://github.com/user-attachments/assets/adf9e6cc-1125-4a75-b000-cc1b0c1e1541)
 
 ## Modify Configs
-- `rgym_exp/config/rg-swarm.yaml` → <mark>support any GPU</mark>
-- `rgym_exp/src/datasets.yaml` → <mark>boosting rewards</mark>
+- `rgym_exp/config/rg-swarm.yaml` → <mark>support low-vRAM GPU</mark>
+- `rgym_exp/src/datasets.yaml` → <mark>boost rewards</mark>
 - `run_rl_swarm.sh` → <mark>all running</mark>
-- `other configs` → <mark>latest tags for compatible</mark>
+- `other configs` → <mark>latest mark for compatible</mark>
 
 ## Official Support LLModels
 - `Gensyn/Qwen2.5-0.5B-Instruct`  → <mark>Recommend</mark>
 - `Qwen/Qwen3-0.6B` → <mark>Recommend</mark>
-- `nvidia/AceInstruct-1.5B` → <mark>Dont Use, boost rewards was config </mark>
-- `dnotitia/Smoothie-Qwen3-1.7B` → <mark>Dont Use, boost rewards was config </mark>
-- `Gensyn/Qwen2.5-1.5B-Instruct` → <mark>Dont Use, boost rewards was config </mark>
+- `nvidia/AceInstruct-1.5B`
+- `dnotitia/Smoothie-Qwen3-1.7B`
+- `Gensyn/Qwen2.5-1.5B-Instruct`
+
+> Only use mark <mark>Recommend</mark> why? because was modify config as `boosting rewards` eg. modify vs original; small model=huge reward vs big model=huge reward
 
 ## Installation Setup
 
@@ -58,21 +60,21 @@ source <(wget -qO- https://raw.githubusercontent.com/arcxteam/w-ai-wombo/main/no
 git clone https://github.com/arcxteam/rl-swarm.git && cd rl-swarm
 ```
 
-## Running Gensyn
+## Running Gensyn Swarm Inferences
 
 ### 1. CLI (Shell/sh)
 
-**A. If you run with <mark>OctaSpace cloud GPU</mark> is default with Tmux/Termux Container**
+**A. If you run with <mark>OctaSpace cloud GPU</mark> defaults with Tmux/Termux container**
 - Full comprehensif guide tips & trick read here [Octaspace](https://github.com/arcxteam/octa-rental-gpu)
 - Quick-1: Always rent with this template **UBUNTU 22.04 LTS** dont use another template
-- Quick-2: Always deploy in coloum **(Expose HTTP Ports)** input port https **3000** will create localhost services for gensyn login
+- Quick-2: Always deploy in coloum **(Expose HTTP Ports)** input https port as **3000** will auto create localhost services for gensyn login
 - Create new sessions `CTRL+B+C`
 - Go to sessions `tmux attach`
 - List sessions `CTRL+B+W`
 - Navigate sessions `scroll up ↑ down ↓ or click any sessions & then enter`
 - Close with run background `CTRL+B+D`
 
-**B. If you run with <mark>Other Rent GPU</mark> create Screen sessions**
+**B. If you run with <mark>another cloud GPU</mark> use Screen sessions**
 - Create sessions `screen -S gensyn`
 - Close sessions `CTRL+A+D`
 - Go to sessions `screen -r gensyn`
@@ -94,10 +96,10 @@ source .venv/bin/activate
 
 ### 2. Docker (Container)
 
-**A. Install Docker & Compose → <mark>if the rent was support & use Ubuntu VM</mark>**
+**A. Install Docker & Compose → <mark>if the cloud GPU was support & use Ubuntu VM</mark>**
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/arcxteam/succinct-prover/refs/heads/main/docker.sh | sudo bash
+curl -sSL https://raw.githubusercontent.com/arcxteam/succinct-prover/refs/heads/main/docker.sh | bash
 ```
 **B. Install swarm build docker**
 * CPU
@@ -110,7 +112,7 @@ docker compose run --rm --build -Pit swarm-cpu
 docker compose run --rm --build -Pit swarm-gpu
 ```
 
-## Other Cloud GPU & VPS Users: Setup Manual localhost:3000 
+## Other Cloud GPU & VPS Users: Setup Manual [localhost:3000]
 - Open a new terminal
 - Install localtunnel
 ```
