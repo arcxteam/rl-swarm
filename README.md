@@ -1,5 +1,5 @@
 > [!NOTE]
-> **Always Latest Update:** Currently in the new recent update, This was modify config by me for Gensyn training LLmodels thats effective for any **low vRAM GPU** resources like **RTX Series 20xx, 30xx, 40xx, A1xx, A2xx, A4xx** is same optimize any swarm inferences (originally).
+> **ALWAYS LATEST UPDATE:** Currently in the new recent update, This was modify config by me for Gensyn training LLmodels thats effective for any **low vRAM GPU** resources like **RTX Series 20xx, 30xx, 40xx, A1xx, A2xx, A4xx** is same optimize any swarm inferences (originally).
 
 [![Gensyn](https://img.shields.io/github/v/release/gensyn-ai/rl-swarm?label=Official-Version&color=blue)](https://github.com/gensyn-ai/rl-swarm/releases)
 
@@ -64,7 +64,7 @@ git clone https://github.com/arcxteam/rl-swarm.git && cd rl-swarm
 
 ### 1. CLI (Shell/sh)
 
-**A. If you run with <mark>OctaSpace cloud GPU</mark> defaults with Tmux/Termux container**
+**A. If you run with <mark>OctaSpace cloud GPU</mark> default is Tmux/Termux sessions**
 - Full comprehensif guide tips & trick read here [Octaspace](https://github.com/arcxteam/octa-rental-gpu)
 - Quick-1: Always rent with this template **UBUNTU 22.04 LTS** dont use another template
 - Quick-2: Always deploy in coloum **(Expose HTTP Ports)** input https port as **3000** will auto create localhost services for gensyn login
