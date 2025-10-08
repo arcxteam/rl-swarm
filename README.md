@@ -26,9 +26,11 @@
 
 ## Modify Configs
 - `rgym_exp/config/rg-swarm.yaml` → <mark>support low-vRAM GPU</mark>
-- `rgym_exp/src/datasets.yaml` → <mark>boost rewards</mark>
-- `run_rl_swarm.sh` → <mark>all running</mark>
+- `rgym_exp/src/datasets.yaml` → <mark>boost rewards = weighted sampling</mark>
+- `run_rl_swarm.sh` → <mark>latest mark for compatible</mark>
 - `other configs` → <mark>latest mark for compatible</mark>
+
+> This modify for **trainer w/ flexibility reasoning of complex tasks as weighted sampling of dataset composition**
 
 ## Official Support LLModels
 - `Gensyn/Qwen2.5-0.5B-Instruct`  → <mark>Recommend</mark>
@@ -37,7 +39,7 @@
 - `dnotitia/Smoothie-Qwen3-1.7B`
 - `Gensyn/Qwen2.5-1.5B-Instruct`
 
-> Only use mark <mark>Recommend</mark> why? because was modify config as `boosting rewards` eg. modify vs original; small model=huge reward vs big model=huge reward
+> Only use mark <mark>Recommend</mark> why? because was modify config as `boosting rewards` eg. modify vs original; **small model=huge reward vs big model=huge reward** thats logic are SAME
 
 ## Installation Setup
 
