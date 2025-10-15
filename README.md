@@ -1,14 +1,12 @@
 > [!NOTE]
 > **ALWAYS LATEST UPDATE:** Currently in the new recent update, This was modify config by me for Gensyn training LLmodels thats effective for any **low vRAM GPU** resources like **RTX Series 20xx, 30xx, 40xx, A1xx, A2xx, A4xx** is same optimize any swarm inferences (originally).
 
-# Nama Proyek
-
 <img src="https://github.com/user-attachments/assets/e951ce01-7420-403e-a14a-11dca4c3b81b"
-     width="60" height="60"
+     width="98" height="98"
      alt="logo-gensyn">
 
 <img src="https://github.com/user-attachments/assets/af4cc3fe-54d7-48ce-b044-366e99e60e3c"
-     width="60" height="60"
+     width="128" height="128"
      alt="logo-gensyn">
 
 [![Gensyn](https://img.shields.io/github/v/release/gensyn-ai/rl-swarm?label=Official-Version&color=blue)](https://github.com/gensyn-ai/rl-swarm/releases)
