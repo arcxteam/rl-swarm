@@ -7,9 +7,11 @@
        alt="logo-gensyn">
 </p>
 
-<div style="text-align: center;">
+<p align="center">
+  <strong>Releases Version</strong>
+  <br>
   [![Gensyn](https://img.shields.io/github/v/release/gensyn-ai/rl-swarm?label=Releases-Version&color=blue)](https://github.com/gensyn-ai/rl-swarm/releases)
-</div>
+</p>
 
 ## System Requirements
 
