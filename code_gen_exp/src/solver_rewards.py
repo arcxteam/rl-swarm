@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 from typing import Any
+import re  # Added for _extract_json
+import json  # Added for JSON parsing
 import ollama
 from transformers import AutoTokenizer
 from code_gen_exp.src.utils.solver_utils import (
@@ -18,7 +20,6 @@ class RewardsOllamaConfig:
     temperature: float = 0.0
     num_predict: int = 512
 
-
 class CodeGenerationRewards:
     def __init__(self, solver_tokenizer_path: str, solver_token_lim: int, ollama_config: RewardsOllamaConfig = RewardsOllamaConfig()):
         self.stage = 0
@@ -28,46 +29,56 @@ class CodeGenerationRewards:
         self.tokenizer = AutoTokenizer.from_pretrained(solver_tokenizer_path, padding_side="left")
         self.solver_token_lim = solver_token_lim
 
-
     def _build_prompt(self, dataset: str, solution_code: str, unit_tests: str, question: str) -> str:
         if dataset == 'mbpp':
             return ("You are an expert programming evaluator who needs to decide whether the given solution will pass all the given unit tests.\n"
-                 "You will be given a problem, a list of unit tests, and a solution.\n"
-                 "Walk through each unit test and dry run the solution.\n"
-                 "If the solution passes all the unit tests, put is_correct as true.\n"
-                 "If the solution fails even a single unit test, put is_correct as false.\n"
-                 "Put you final answer in a JSON fenced block. The JSON should have only one key: is_correct. It should be a boolean.\n"
-                 "Its format should be as follows:\n"
-                 "```json\n{\n  \"is_correct\": true | false\n}\n```\n\n"
-                 "--- Problem ---\n"
-                 f"{question}\n\n"
-                 "--- Unit Tests ---\n"
-                 f"{unit_tests}\n\n"
-                 "--- Solution ---\n"
-                 f"{solution_code}\n\n"
-            )
+                    "You will be given a problem, a list of unit tests, and a solution.\n"
+                    "Walk through each unit test and dry run the solution.\n"
+                    "If the solution passes all the unit tests, put is_correct as true.\n"
+                    "If the solution fails even a single unit test, put is_correct as false.\n"
+                    "Put you final answer in a JSON fenced block. The JSON should have only one key: is_correct. It should be a boolean.\n"
+                    "Its format should be as follows:\n"
+                    "```json\n{\n  \"is_correct\": true | false\n}\n```\n\n"
+                    "``````\n\n"
+                    "--- Problem ---\n"
+                    f"{question}\n\n"
+                    "--- Unit Tests ---\n"
+                    f"{unit_tests}\n\n"
+                    "--- Solution ---\n"
+                    f"{solution_code}\n\n"
+                    )
         elif dataset == 'code_contests':
-            return ("You are an expert programming evaluator who needs to decide whether the given solution will pass all the given unit tests.\n"              
-                "With the code you will be given the inputs for unit tests along with the associated outputs. \n"
-                "Decide if the given python code will produce the given outputs when run against the inputs. \n"
-                "Put you final answer in a JSON fenced block. The JSON should have only one key: is_correct. It should be a boolean.\n"
-                "Its format should be as follows:\n"
-                "```json\n{\n  \"is_correct\": true | false\n}\n```\n\n"
-                "--- Problem ---\n"
-                f"{question}\n\n"
-                "--- Unit Tests ---\n"
-                f"{unit_tests}\n\n"
-                "--- Solution ---\n"
-                f"{solution_code}\n\n"
-            )
+            return ("You are an expert programming evaluator who needs to decide whether the given solution will pass all the given unit tests.\n"
+                    "With the code you will be given the inputs for unit tests along with the associated outputs. \n"
+                    "Decide if the given python code will produce the given outputs when run against the inputs. \n"
+                    "Put you final answer in a JSON fenced block. The JSON should have only one key: is_correct. It should be a boolean.\n"
+                    "Its format should be as follows:\n"
+                    "```json\n{\n  \"is_correct\": true | false\n}\n```\n\n"
+                    "--- Problem ---\n"
+                    f"{question}\n\n"
+                    "--- Unit Tests ---\n"
+                    f"{unit_tests}\n\n"
+                    "--- Solution ---\n"
+                    f"{solution_code}\n\n"
+                    )
 
     def _extract_json(self, text: str) -> Any:
+        # ORIGINAL CODE
         match = re.search(r"```json\s*(\{[\s\S]*?\})\s*```", text, re.IGNORECASE)
         if match:
             return json.loads(match.group(1))
         return json.loads(text)
 
+    # MODIFICATION: Add quality
+    def _calculate_quality_bonus(self, parsed_code: str) -> float:
+        """Calculate quality bonus for documented code."""
+        bonus = 0.0
+        if '"""' in parsed_code or "'''" in parsed_code:
+            bonus += 0.1
+        return bonus
+
     def reward_fn(self, dataset, solutions, unittests, question):
+        # ORIGI CODE with ADDITIVE modifications
         rewards = []
         for solution in solutions:
             if not isinstance(solution, str):
@@ -75,7 +86,7 @@ class CodeGenerationRewards:
             else:
                 parsed_code = parse_python_fence(solution)
                 eos_found = check_eos(solution, self.tokenizer, self.solver_token_lim)
-                if parsed_code is None: # No fenced code found
+                if parsed_code is None:  # No fenced code found
                     reward = -1.0
                 else:
                     try:
@@ -85,21 +96,20 @@ class CodeGenerationRewards:
                         reward = parse_response(raw_text)
                         if reward is None:
                             reward = 0.0
+                        # MODIFICATION: Add quality
+                        if reward > 0:
+                            reward += self._calculate_quality_bonus(parsed_code)
                     except:
                         reward = 0.0
-                reward += 0.2 if eos_found else -0.2
+                    reward += 0.2 if eos_found else -0.2
             rewards.append(reward)
-
         return rewards
-
-
 
     def __call__(self, game_state):
         solutions_by_agent = get_solutions(game_state, self.stage)
         unittests_by_agent = get_unittests(game_state, self.stage)
         questions = get_questions(game_state, self.stage)
         datasets_by_agent = get_dataset(game_state, self.stage)
-        
         rewards = {}  # Key per agent
         try:
             for agent in solutions_by_agent:
