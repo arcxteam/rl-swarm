@@ -11,7 +11,7 @@ hydra:
       level: DEBUG
 
 training:
-  max_round: 100000 # Default 1M
+  max_round: 1000000 # Default 1M
   max_stage: 1
   hf_push_frequency: 1
   num_generations: 2
@@ -93,7 +93,7 @@ game_manager:
   communication_kwargs:
     identity_path: ${oc.env:IDENTITY_PATH,null}
     startup_timeout: 120
-    beam_size: 11  # OPTIMIZED default 10
+    beam_size: 10  # OPTIMIZED default 10
     get_retries: 1
   coordinator:
     _target_: code_gen_exp.src.coordinator.ModalSwarmCoordinator
@@ -119,7 +119,7 @@ proposer:
     train_batch_size: 2  # OPTIMIZED: default 3
     identity_path: ${oc.env:IDENTITY_PATH,null}
     startup_timeout: 120
-    beam_size: 11  # OPTIMIZED default 10
+    beam_size: 10  # OPTIMIZED default 10
     get_retries: 1 # OPTIMIZED default 0
   ppo_config:
     _target_: code_gen_exp.src.proposer.PPOConfig
