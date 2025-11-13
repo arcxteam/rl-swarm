@@ -23,7 +23,7 @@
 
 ## Overview
 
-Our pick this model a continuously trained `Qwen2.5-Coder-0.5B-Instruct` fine-tuned using **Gensyn RL-Swarm** framework with **GRPO** (Generalized Reward Policy Optimization) and supported format **GGUF (llama.cpp)** for enhanced trained on logic, mathematical problem-solving & reasoning tasks capabilities. **Note: My modify previous Gensyn v0.6.2-v0.6.4 the training same focuses**.
+Our pick this model a continuously trained `Qwen2.5-Coder-0.5B-Instruct` fine-tuned using **Gensyn RL-Swarm** framework with **GRPO** *(Generalized Reward Policy Optimization)* and supported format **GGUF (llama.cpp)** for enhanced trained on logic, mathematical problem-solving & reasoning tasks capabilities. **Note: modify previous Gensyn v0.6.2-v0.6.4 the training same focuses**.
 
 - **Agent ID:** [Huggingface GGUF](https://huggingface.co/0xgr3y/Qwen2.5-Coder-0.5B-Instruct-Gensyn-Swarm-tall_tame_panther)
 - **Training Status:** 🟢 LIVE - Model updates automatically every 5-10 minutes
@@ -34,7 +34,7 @@ Our pick this model a continuously trained `Qwen2.5-Coder-0.5B-Instruct` fine-tu
 - **GGUF Quantization:** Multiple quantized available `(F16, Q3_K_M, Q4_K_M, Q5_K_M, Q6_K)`
 
 > [!NOTE]
-> **ALWAYS LATEST UPDATE:** Currently in recent update Gensyn RL-Swarm is **CodeZero (Solvers, Proposers & Evaluators)**, This was modify config by me for Gensyn training LLmodels thats effective for any min-low vRAM GPU resources like **RTX Series 20xx, 30xx, 40xx, A1xx, A2xx, A4xx** is same optimize any swarm inferences (originally).
+> **ALWAYS LATEST UPDATE:** Currently in recent update Gensyn RL-Swarm is **CodeZero (Solvers, Proposers & Evaluators)**, This was modify config by me for Gensyn training LLmodels thats effective for any min-low vRAM GPU resources like **RTX Series 20xx, 30xx, 40xx, A1xx, A2xx, A4xx** is same optimize any swarm training (originally).
 
 - **Proposers:** Generate coding problems and unit tests, adjusting difficulty dynamically based on solver performance. Proposers create challenges that adapt to the swarm's current capabilities, ensuring continuous learning opportunities.
 - **Solvers:** Attempt coding challenges, learn locally through RL, and share rollouts with peers. Solvers exchange solutions to promote diversity and accelerate collective learning across the network.
@@ -58,7 +58,7 @@ Our pick this model a continuously trained `Qwen2.5-Coder-0.5B-Instruct` fine-tu
 
 > **Note: Its just a imagine, you can choose anything your take. But i can sharing any tips if your rent cloud GPU to [https://octa.space](https://octa.space/?ref=rTXHXwn7D96) I'm not promoter choose this my principals rent any low-cost, its very cheaper than rental GPU competitors. For tips & trick read... https://github.com/arcxteam/octa-rental-gpu**
 
-> Basically, if you rent a GPU with a minimum of 6GB or even 8-12-16-24GB of VRAM, you can run other nodes because only 4-5GB of VRAM will be used for this GENSYN with the configuration I modified.
+> **Basically, if you rent a GPU with a minimum of 6GB or even 8-12-16-24GB of VRAM, you can run other nodes because only 4-5GB of VRAM will be used for this GENSYN with the configuration I modified.**
 
 ![photo_6271671078992153653_w](https://github.com/user-attachments/assets/adf9e6cc-1125-4a75-b000-cc1b0c1e1541)
 
@@ -70,8 +70,8 @@ Our pick this model a continuously trained `Qwen2.5-Coder-0.5B-Instruct` fine-tu
 
 ## Official Support Models
 - `Qwen/Qwen2.5-Coder-0.5B-Instruct`  → <mark>Recommend Solver</mark>
-- `deepseek-ai/deepseek-coder-1.3b-instruct` → <mark>Recommend Proposers, Evaluators</mark>
-- `Qwen/Qwen2.5-Coder-1.5B-Instruct` → <mark>Recommend Proposers, Evaluators</mark>
+- `deepseek-ai/deepseek-coder-1.3b-instruct` → <mark>Proposers, Evaluators</mark>
+- `Qwen/Qwen2.5-Coder-1.5B-Instruct` → <mark>Proposers, Evaluators</mark>
 
 > The model is trained on a composite dataset (1,000 samples) with weighted sampling strategy
 
@@ -109,7 +109,7 @@ git clone https://github.com/arcxteam/rl-swarm.git && cd rl-swarm
 
 ### 1. CLI (Shell/sh)
 
-**A. If you run with <mark>OctaSpace cloud GPU</mark> default is Tmux/Termux sessions**
+**A. If you run with <mark>OctaSpace GPU</mark> default Tmux/Termux sessions**
 - Full comprehensif guide tips & trick read here [Octaspace](https://github.com/arcxteam/octa-rental-gpu)
 - Quick-1: Always rent with this template **UBUNTU 22.04 LTS** dont use another template
 - Quick-2: Always deploy in coloum **(Expose HTTP Ports)** input https port as **3000** will auto create localhost services for gensyn login
@@ -119,7 +119,7 @@ git clone https://github.com/arcxteam/rl-swarm.git && cd rl-swarm
 - Navigate sessions `scroll up ↑ down ↓ or click any sessions & then enter`
 - Close with run background `CTRL+B+D`
 
-**B. If you run with <mark>another cloud GPU</mark> use Screen sessions**
+**B. If you run with <mark>other cloud GPU</mark> use Screen sessions**
 - Create sessions `screen -S gensyn`
 - Close sessions `CTRL+A+D`
 - Go to sessions `screen -r gensyn`
@@ -157,7 +157,7 @@ docker compose run --rm --build -Pit swarm-cpu
 docker compose run --rm --build -Pit swarm-gpu
 ```
 
-## Other Cloud GPU & VPS Users: Setup Manual [localhost:3000]
+## Open Gensyn Dashboard - Manual `localhost:3000`
 - Open a new terminal
 - Install localtunnel
 ```
