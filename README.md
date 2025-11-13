@@ -1,19 +1,36 @@
-> [!NOTE]
-> **ALWAYS LATEST UPDATE:** Currently in the new recent update, This was modify config by me for Gensyn training LLmodels thats effective for any **low vRAM GPU** resources like **RTX Series 20xx, 30xx, 40xx, A1xx, A2xx, A4xx** is same optimize any swarm inferences (originally).
-
 <p align="center">
   <img src="https://github.com/user-attachments/assets/e951ce01-7420-403e-a14a-11dca4c3b81b"
        width="128" height="128"
        alt="logo-gensyn">
 </p>
 
+## Model Overview
+
+This model is a continuously trained `Qwen2.5-Coder-0.5B-Instruct` fine-tuned using **Gensyn RL-Swarm** framework with **GRPO (Generalized Reward Policy Optimization)** and support format **GGUF (llama.cpp)** for enhanced trained on logic, mathematical problem-solving & reasoning tasks capabilities. **Note: My modify previous Gensyn v0.6.2-v0.6.4 the training same focuses**.
+
+- **Agent ID:** [Huggingface Model](https://huggingface.co/0xgr3y/Qwen3-0.6B-Gensyn-Swarm-tall_tame_panther)
+- **Training Status:** 🟢 LIVE - Model updates automatically every 5-10 minutes
+- **Auto-Sync GGUF Pipeline Status:** 🟢 LIVE - Commits update automatically every 1h-hourly
+- **Current Progress:** Round 44,212+ / 100,000 (44,21%)
+- **Framework Version:** Gensyn RL-Swarm `v0.7.0`
+- **Contract Judge:** SwarmCoordinator `v0.4.2`
+- **GGUF Quantization:** Multiple quantized available `(F16, Q3_K_M, Q4_K_M, Q5_K_M, Q6_K)`
+
+> [!NOTE]
+> **ALWAYS LATEST UPDATE:** Currently in the new recent update is **CodeZero (Solvers, Proposers & Evaluators)**, This was modify config by me for Gensyn training LLmodels thats effective for any min-low vRAM GPU resources like **RTX Series 20xx, 30xx, 40xx, A1xx, A2xx, A4xx** is same optimize any swarm inferences (originally).
+
+- **Proposers:** Generate coding problems and unit tests, adjusting difficulty dynamically based on solver performance. Proposers create challenges that adapt to the swarm's current capabilities, ensuring continuous learning opportunities.
+- **Solvers:** Attempt coding challenges, learn locally through RL, and share rollouts with peers. Solvers exchange solutions to promote diversity and accelerate collective learning across the network.
+- **Evaluators**: Frozen models that assess correctness and assign rewards. Evaluators use rule-based assessment to score submissions without executing code, ensuring safety and scalability.
+
 [![Gensyn](https://img.shields.io/github/v/release/gensyn-ai/rl-swarm?label=Releases-Version&color=blue)](https://github.com/gensyn-ai/rl-swarm/releases)
 
 ## System Requirements
 
-![VPS](https://img.shields.io/badge/CLOUD_GPU_SERVER-232F3E?style=for-the-badge&logo=digitalocean&logoColor=white)
+![VPS](https://img.shields.io/badge/CPU/GPU_Server-232F3E?style=for-the-badge&logo=digitalocean&logoColor=red)
 ![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
 ![Docker](https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white)
+![Huggingface](https://img.shields.io/badge/HuggingFace-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black)
 
 | Requirement     | Detail                 |
 | :----------     | :--------------------  |
@@ -30,22 +47,27 @@
 
 ![photo_6271671078992153653_w](https://github.com/user-attachments/assets/adf9e6cc-1125-4a75-b000-cc1b0c1e1541)
 
-## Modify Configs
+## Modify Configure
 - `rgym_exp/config/rg-swarm.yaml` → <mark>support low-vRAM GPU</mark>
-- `rgym_exp/src/datasets.yaml` → <mark>boost rewards = weighted sampling</mark>
+- `rgym_exp/src/datasets.yaml` → <mark>boost-rewards = weighted sampling composition</mark>
 - `run_rl_swarm.sh` → <mark>latest mark for compatible</mark>
 - `other configs` → <mark>latest mark for compatible</mark>
 
-> This modify for **trainer w/ flexibility reasoning of complex tasks as weighted sampling of dataset composition**
-
 ## Official Support LLModels
-- `Gensyn/Qwen2.5-0.5B-Instruct`  → <mark>Recommend</mark>
-- `Qwen/Qwen3-0.6B` → <mark>Recommend</mark>
-- `nvidia/AceInstruct-1.5B`
-- `dnotitia/Smoothie-Qwen3-1.7B`
-- `Gensyn/Qwen2.5-1.5B-Instruct`
+- `Qwen/Qwen2.5-Coder-0.5B-Instruct`  → <mark>Recommend Solver</mark>
+- `deepseek-ai/deepseek-coder-1.3b-instruct` → <mark>Recommend Proposers & Evaluators</mark>
+- `Qwen/Qwen2.5-Coder-1.5B-Instruct` → <mark>Recommend Proposers & Evaluators</mark>
 
-> Only use mark <mark>Recommend</mark> why? because was modify config as `boosting rewards` eg. modify vs original; **small model=huge reward vs big model=huge reward** thats logic are SAME
+> The model is trained on a composite dataset (1,000 samples) with weighted sampling strategy
+
+| Dataset | Weight | Focus Area |
+|---------|--------|------------|
+| Propositional Logic | 7 | Logical reasoning, truth tables, Boolean operations |
+| Calendar Arithmetic | 6 | Date calculations, leap years, recurring events |
+| Decimal Arithmetic | 5 | Multi-term decimal operations with precision |
+| Base Conversion | 4 | Number system conversions (base 2-16) |
+| Fraction Simplification | 4 | GCD/LCM, fraction reduction |
+| Basic Arithmetic | 2 | Foundation operations with parentheses |
 
 ## Installation Setup
 
@@ -58,7 +80,7 @@ tar clang nethogs ncdu unzip build-essential pkg-config libssl-dev libleveldb-de
 speedtest-cli ca-certificates libffi-dev libsqlite3-dev -y
 ```
 
-**2. Install NODE.JS - NPM - YARN - PM2**
+**2. Install v22 Node.js - Npm - Yarn - Pm2**
 ```
 source <(wget -qO- https://raw.githubusercontent.com/arcxteam/w-ai-wombo/main/nodejs.sh)
 ```
