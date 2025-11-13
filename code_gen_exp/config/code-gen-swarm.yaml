@@ -11,13 +11,13 @@ hydra:
       level: DEBUG
 
 training:
-  max_round: 1000000
+  max_round: 100000 # Default 1M
   max_stage: 1
   hf_push_frequency: 1
   num_generations: 2
-  num_transplant_trees: 2
+  num_transplant_trees: 1  # Default 2
   seed: 42
-  dtype: 'float32'
+  dtype: 'bfloat16'  # Default float32, support low resources & fast
   max_new_tokens: 256
 
 reward_config:
@@ -27,12 +27,11 @@ reward_config:
 
 blockchain:
   alchemy_url: "https://gensyn-testnet.g.alchemy.com/public"
-  swarm_contract_address: ${oc.env:SWARM_CONTRACT,null} # This is set by modal-login in run_rl_swarm.sh
-  org_id: ${oc.env:ORG_ID,null} # This is set by modal-login in run_rl_swarm.sh
-  mainnet_chain_id: 685685 # currently unused, will be used with WalletSwarmCoordinator
+  swarm_contract_address: ${oc.env:SWARM_CONTRACT,null}
+  org_id: ${oc.env:ORG_ID,null}
+  mainnet_chain_id: 685685
   modal_proxy_url: "http://localhost:3000/api/"
   swarm_coordinator_abi_path: "code_gen_exp/contracts/SwarmCoordinator_0.4.2.json"
-
 
 eval:
   judge_base_url: "https://codezero-judge.gensyn.ai"
@@ -62,6 +61,7 @@ game_manager:
       epsilon_high: 0.28
       max_new_tokens: ${training.max_new_tokens}
       num_generations: ${training.num_generations}
+      enable_gradient_checkpointing: true  # Default not use false/true
     log_with: wandb
     log_dir: ${log_dir}
     judge_base_url: ${eval.judge_base_url}
@@ -85,7 +85,7 @@ game_manager:
   data_manager:
     _target_: code_gen_exp.src.solver_data.CodeGenerationDataManager
     system_prompt: 'solver'
-    batch_size: 2
+    batch_size: 2  # OPTIMIZED default 2
     local_batch_size: 1
     proposer_batch_size: 1
     num_generations: ${training.num_generations}
@@ -93,7 +93,7 @@ game_manager:
   communication_kwargs:
     identity_path: ${oc.env:IDENTITY_PATH,null}
     startup_timeout: 120
-    beam_size: 10
+    beam_size: 11  # OPTIMIZED default 10
     get_retries: 1
   coordinator:
     _target_: code_gen_exp.src.coordinator.ModalSwarmCoordinator
@@ -104,8 +104,8 @@ game_manager:
     swarm_coordinator_abi_json: ${blockchain.swarm_coordinator_abi_path}
 
 default_large_model_pool: 
-  - deepseek-ai/deepseek-coder-1.3b-instruct
   - Qwen/Qwen2.5-Coder-1.5B-Instruct
+  - deepseek-ai/deepseek-coder-1.3b-instruct
 
 default_small_model_pool:
   - Qwen/Qwen2.5-Coder-0.5B-Instruct
@@ -116,11 +116,11 @@ proposer:
     _target_: code_gen_exp.src.proposer_service.ProposerServiceConfig
     model: ${oc.env:MODEL_NAME, ${gpu_model_choice:${default_large_model_pool},${default_small_model_pool}}} 
     num_proposals: 3
-    train_batch_size: 3   
+    train_batch_size: 2  # OPTIMIZED: default 3
     identity_path: ${oc.env:IDENTITY_PATH,null}
     startup_timeout: 120
-    beam_size: 10
-    get_retries: 0
+    beam_size: 11  # OPTIMIZED default 10
+    get_retries: 1 # OPTIMIZED default 0
   ppo_config:
     _target_: code_gen_exp.src.proposer.PPOConfig
   vllm_config:
@@ -132,6 +132,3 @@ proposer:
     org_id: ${blockchain.org_id}
     modal_proxy_url: ${blockchain.modal_proxy_url}
     swarm_coordinator_abi_json: ${blockchain.swarm_coordinator_abi_path}
-
-    
-    
