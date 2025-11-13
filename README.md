@@ -4,28 +4,43 @@
        alt="logo-gensyn">
 </p>
 
-## Model Overview
+<h1 align="center">Gensyn RL-Swarm: Training & GGUF Inference for Quantized LLMs</h1>
 
-This model is a continuously trained `Qwen2.5-Coder-0.5B-Instruct` fine-tuned using **Gensyn RL-Swarm** framework with **GRPO (Generalized Reward Policy Optimization)** and support format **GGUF (llama.cpp)** for enhanced trained on logic, mathematical problem-solving & reasoning tasks capabilities. **Note: My modify previous Gensyn v0.6.2-v0.6.4 the training same focuses**.
+<p align="center">
+  <strong>A Comprehensive Guide to Running a Gensyn RL-Swarm Training</strong><br>
+  <em>Continuous Training, an Experimental (advanced) mode, GGUF LLM Compatibility on Huggingface</em>
+</p>
 
-- **Agent ID:** `HUGGGGING`
+<p align="center">
+  <img src="https://img.shields.io/badge/Trained%20with-Gensyn%20RL--Swarm-pink" alt="gensyn">
+  <a href="https://github.com/gensyn-ai/rl-swarm/releases"><img src="https://img.shields.io/github/v/release/gensyn-ai/rl-swarm?label=Version&color=green" alt="version"></a>
+  <img src="https://img.shields.io/badge/GGUF-Available-FF0069" alt="GGUF">
+  <img src="https://img.shields.io/badge/LLama.cpp-Compatible-orange" alt="llama.cpp">
+  <img src="https://img.shields.io/badge/🤗 Huggingface-Models-blue" alt="Huggingface">
+</p>
+
+---
+
+## Overview
+
+Our pick this model a continuously trained `Qwen2.5-Coder-0.5B-Instruct` fine-tuned using **Gensyn RL-Swarm** framework with **GRPO** (Generalized Reward Policy Optimization) and supported format **GGUF (llama.cpp)** for enhanced trained on logic, mathematical problem-solving & reasoning tasks capabilities. **Note: My modify previous Gensyn v0.6.2-v0.6.4 the training same focuses**.
+
+- **Agent ID:** [Huggingface GGUF](https://huggingface.co/0xgr3y/Qwen2.5-Coder-0.5B-Instruct-Gensyn-Swarm-tall_tame_panther)
 - **Training Status:** 🟢 LIVE - Model updates automatically every 5-10 minutes
 - **Auto-Sync GGUF Pipeline Status:** 🟢 LIVE - Commits update automatically every 1h-hourly
-- **Current Progress:** Round 43,610+ / 100,000 (43,61%)
-- **Framework Version:** Gensyn RL-Swarm `v0.7.0`
+- **Current Progress:** Round 10,610+ target 100,000 (10,61%)
+- **Framework Version:** Gensyn RL-Swarm (CodeZero) `v0.7.0`
 - **Contract Judge:** SwarmCoordinator `v0.4.2`
 - **GGUF Quantization:** Multiple quantized available `(F16, Q3_K_M, Q4_K_M, Q5_K_M, Q6_K)`
 
 > [!NOTE]
-> **ALWAYS LATEST UPDATE:** Currently in the new recent update is **CodeZero (Solvers, Proposers & Evaluators)**, This was modify config by me for Gensyn training LLmodels thats effective for any min-low vRAM GPU resources like **RTX Series 20xx, 30xx, 40xx, A1xx, A2xx, A4xx** is same optimize any swarm inferences (originally).
+> **ALWAYS LATEST UPDATE:** Currently in recent update Gensyn RL-Swarm is **CodeZero (Solvers, Proposers & Evaluators)**, This was modify config by me for Gensyn training LLmodels thats effective for any min-low vRAM GPU resources like **RTX Series 20xx, 30xx, 40xx, A1xx, A2xx, A4xx** is same optimize any swarm inferences (originally).
 
 - **Proposers:** Generate coding problems and unit tests, adjusting difficulty dynamically based on solver performance. Proposers create challenges that adapt to the swarm's current capabilities, ensuring continuous learning opportunities.
 - **Solvers:** Attempt coding challenges, learn locally through RL, and share rollouts with peers. Solvers exchange solutions to promote diversity and accelerate collective learning across the network.
 - **Evaluators**: Frozen models that assess correctness and assign rewards. Evaluators use rule-based assessment to score submissions without executing code, ensuring safety and scalability.
 
-[![Gensyn](https://img.shields.io/github/v/release/gensyn-ai/rl-swarm?label=Releases-Version&color=blue)](https://github.com/gensyn-ai/rl-swarm/releases)
-
-## System Requirements
+## Requirements
 
 ![VPS](https://img.shields.io/badge/CPU/GPU_Server-232F3E?style=for-the-badge&logo=digitalocean&logoColor=red)
 ![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
@@ -43,20 +58,20 @@ This model is a continuously trained `Qwen2.5-Coder-0.5B-Instruct` fine-tuned us
 
 > **Note: Its just a imagine, you can choose anything your take. But i can sharing any tips if your rent cloud GPU to [https://octa.space](https://octa.space/?ref=rTXHXwn7D96) I'm not promoter choose this my principals rent any low-cost, its very cheaper than rental GPU competitors. For tips & trick read... https://github.com/arcxteam/octa-rental-gpu**
 
-### Basically, if you rent a GPU with a minimum of 6GB or even 8-12-16-24GB of VRAM, you can run other nodes because only 4-5GB of VRAM will be used for this GENSYN with the configuration I modified.
+> Basically, if you rent a GPU with a minimum of 6GB or even 8-12-16-24GB of VRAM, you can run other nodes because only 4-5GB of VRAM will be used for this GENSYN with the configuration I modified.
 
 ![photo_6271671078992153653_w](https://github.com/user-attachments/assets/adf9e6cc-1125-4a75-b000-cc1b0c1e1541)
 
-## Modify Configure
+## Configure Modify
 - `rgym_exp/config/rg-swarm.yaml` → <mark>support low-vRAM GPU</mark>
 - `rgym_exp/src/datasets.yaml` → <mark>boost-rewards = weighted sampling composition</mark>
 - `run_rl_swarm.sh` → <mark>latest mark for compatible</mark>
 - `other configs` → <mark>latest mark for compatible</mark>
 
-## Official Support LLModels
+## Official Support Models
 - `Qwen/Qwen2.5-Coder-0.5B-Instruct`  → <mark>Recommend Solver</mark>
-- `deepseek-ai/deepseek-coder-1.3b-instruct` → <mark>Recommend Proposers & Evaluators</mark>
-- `Qwen/Qwen2.5-Coder-1.5B-Instruct` → <mark>Recommend Proposers & Evaluators</mark>
+- `deepseek-ai/deepseek-coder-1.3b-instruct` → <mark>Recommend Proposers, Evaluators</mark>
+- `Qwen/Qwen2.5-Coder-1.5B-Instruct` → <mark>Recommend Proposers, Evaluators</mark>
 
 > The model is trained on a composite dataset (1,000 samples) with weighted sampling strategy
 
@@ -90,7 +105,7 @@ source <(wget -qO- https://raw.githubusercontent.com/arcxteam/w-ai-wombo/main/no
 git clone https://github.com/arcxteam/rl-swarm.git && cd rl-swarm
 ```
 
-## Running Gensyn Swarm Inferences
+## Running Gensyn RL-Swarm
 
 ### 1. CLI (Shell/sh)
 
