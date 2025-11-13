@@ -2,9 +2,7 @@ import re
 from typing import Any, Dict, List, Tuple
 import random
 from copy import deepcopy
-
 from datasets import Dataset, load_dataset, concatenate_datasets
-
 from genrl.data import DataManager
 from genrl.logging_utils.global_defs import get_logger
 from genrl.misc_utils.utils import generate_md5_hash_id
@@ -12,10 +10,9 @@ from genrl.state import GameState, WorldState
 from genrl.communication.hivemind.hivemind_backend import HivemindBackend
 from code_gen_exp.src.utils.solver_data_mapper import MBPPMapper, CodeContestsMapper
 
-
 SYSTEM_PROMPTS = {
     "default": "You are a helpful assistant.",
-    "solver": "You are an expert coding assistant, your job is to provide the highest quality solution to a given problem.  The solution should be easily parseable by a computer. Do not include any additional keys or commentary. The solution must be valid python code. The solution should be executable python, with no other text. do not include any tests or verification, just the solution as a function"
+    "solver": "You are an expert coding assistant, your job is to provide the highest quality solution to a given problem. The solution should be easily parseable by a computer. Do not include any additional keys or commentary. The solution must be valid python code. The solution should be executable python, with no other text. do not include any tests or verification, just the solution as a function"
 }
 
 MAX_PROPOSER_PROMPT_LENGTH = 2000
@@ -31,15 +28,13 @@ def build_prompt(flattened_data: Any) -> Any:
     ]
     return {"prompt": prompt}
 
-
 def add_source_dataset(sample, ds_name):
     sample['original_dataset'] = ds_name
     return sample
 
-
 class CodeGenerationDataManager(DataManager):
     """Data Manager for Code Generation Datasets.
-
+    
     This class integrates code generation datasets with genrl
     data management framework, providing infinite iteration through reseeding.
     """
@@ -56,30 +51,37 @@ class CodeGenerationDataManager(DataManager):
 
         Args:
         """
-
         self.system_prompt = SYSTEM_PROMPTS.get(
             system_prompt, SYSTEM_PROMPTS["default"]
         )
         self.num_generations = kwargs.get("num_generations", None)
         self.num_transplant_trees = kwargs.get("num_transplant_trees", 1)
         assert self.num_transplant_trees >= 0
-
+        
+        # ORIGIN LOAD DATASETS
         self.local_dataset_mbpp = load_dataset("google-research-datasets/mbpp", streaming=True)
         self.local_dataset_mbpp = self.local_dataset_mbpp.map(lambda x: add_source_dataset(x, 'mbpp'))
-
         self.local_dataset_cc = load_dataset("deepmind/code_contests", streaming=True)
         self.local_dataset_cc = self.local_dataset_cc.map(lambda x: add_source_dataset(x, 'code_contests'))
-
-        self.local_dataset = concatenate_datasets([self.local_dataset_mbpp['train'], 
-                                                   self.local_dataset_cc['train']])
+        self.local_dataset = concatenate_datasets([self.local_dataset_mbpp['train'],
+                                                    self.local_dataset_cc['train']])
         
         self.local_batch_size = local_batch_size
         self.batch_size = batch_size
         self.proposer_batch_size = proposer_batch_size
         assert self.local_batch_size + self.proposer_batch_size == self.batch_size, f"Batch sizes must sum to total batch size, got {self.local_batch_size} and {self.proposer_batch_size}"
-
+        
         self.local_dataset = self.local_dataset.batch(batch_size=self.local_batch_size)
         self.local_dataset_iter = iter(self.local_dataset)
+        
+        # MODIFICATION: Add dataset into methode Weighted Sampling 60% MBPP - 40% CODE CONTEST
+        self.dataset_weights = {'mbpp': 6, 'code_contests': 4}
+        self.dataset_pool = {
+            'mbpp': self.local_dataset_mbpp['train'].batch(batch_size=self.local_batch_size),
+            'code_contests': self.local_dataset_cc['train'].batch(batch_size=self.local_batch_size)
+        }
+        self.dataset_iters = {name: iter(dataset) for name, dataset in self.dataset_pool.items()}
+        self.use_weighted_sampling = True  # Toggle for weighted sampling
 
     def initialize(self, backend: HivemindBackend):
         self.backend = backend
@@ -97,7 +99,6 @@ class CodeGenerationDataManager(DataManager):
     def flatten_tree(
         self, inputs: Dict[Any, Dict[Any, List[Tuple[Any]]]], stage: int
     ) -> Tuple[Dict[str, List[Any]], Dict[int, Tuple[int, int, int]]]:
-
         flattened_input = {
             "system_prompt": [],
             "user_prompt": [],
@@ -106,6 +107,7 @@ class CodeGenerationDataManager(DataManager):
         }
         index_mapping = {}
         cur_idx = 0
+
         for agent in inputs:
             for batch_id in inputs[agent]:
                 for node_idx, state in enumerate(inputs[agent][batch_id]):
@@ -118,27 +120,26 @@ class CodeGenerationDataManager(DataManager):
                         flattened_input["metadata"].append(state.metadata)
                     else:
                         flattened_input["metadata"].append({})
-
                     index_mapping[cur_idx] = (agent, batch_id, node_idx)
                     cur_idx += 1
+
         return flattened_input, index_mapping
 
     def prepare_input(
-            self, inputs: Dict[Any, Dict[Any, List[Tuple[Any]]]], stage: int = None
-        ) -> Tuple[Dataset, Dict[int, Tuple[int, int, int]]]:
-            input_flattened, index_mapping = self.flatten_tree(inputs, stage)
-            
-            # Check if we have any data to process
-            if not input_flattened or all(len(v) == 0 for v in input_flattened.values()):
-                # Return empty dataset and empty mapping
-                return Dataset.from_dict({"prompt": []}), {}
-            
-            try:
-                input_flattened = Dataset.from_dict(input_flattened)
-                input_prepared = input_flattened.map(build_prompt)
-                return input_prepared, index_mapping
-            except:
-                return Dataset.from_dict({"prompt": []}), {}
+        self, inputs: Dict[Any, Dict[Any, List[Tuple[Any]]]], stage: int = None
+    ) -> Tuple[Dataset, Dict[int, Tuple[int, int, int]]]:
+        input_flattened, index_mapping = self.flatten_tree(inputs, stage)
+        # Check if we have any data to process
+        if not input_flattened or all(len(v) == 0 for v in input_flattened.values()):
+            # Return empty dataset and empty mapping
+            return Dataset.from_dict({"prompt": []}), {}
+
+        try:
+            input_flattened = Dataset.from_dict(input_flattened)
+            input_prepared = input_flattened.map(build_prompt)
+            return input_prepared, index_mapping
+        except:
+            return Dataset.from_dict({"prompt": []}), {}
 
     def prepare_actions(
         self, outputs: Any, index_mapping: Dict[int, Tuple[Any]]
@@ -180,7 +181,6 @@ class CodeGenerationDataManager(DataManager):
                     )
         return latest_state
 
-
     def prepare_states(
         self, current_state: GameState, swarm_states: Dict[Any, Any]
     ) -> Dict[Any, Dict[Any, List[Tuple[Any]]]]:
@@ -195,15 +195,18 @@ class CodeGenerationDataManager(DataManager):
                     trees[agent] = {}
                 if batch_id not in trees[agent]:
                     trees[agent][batch_id] = None
+
                 payload = transplants[pair]
                 received_states, received_actions, received_metadata = (
                     payload.world_state,
                     payload.actions,
                     payload.metadata,
                 )
+
                 world_state = received_states.environment_states
                 payload_batch_id = generate_md5_hash_id(world_state["question"])
                 assert payload_batch_id == batch_id
+
                 if (
                     trees[agent][batch_id] is None
                 ):  # we don't have a tree for this batch item, make one and append actions
@@ -218,6 +221,7 @@ class CodeGenerationDataManager(DataManager):
                     ] = received_metadata
                 else:  # we already have this tree, and actions were appended in run_game_stage()
                     pass
+
         world_state = current_state.get_latest_state()
         return world_state
 
@@ -229,6 +233,7 @@ class CodeGenerationDataManager(DataManager):
     ) -> Dict[Tuple[Any], Any]:
         # Loop through and return a set of num_transplant transplants to add
         transplants = {}
+
         for agent in swarm_states:
             if agent not in current_state.trees:
                 for batch_id in swarm_states[agent]:
@@ -241,6 +246,7 @@ class CodeGenerationDataManager(DataManager):
                             and len(payload.actions) == self.num_generations
                         ):
                             transplants[(agent, batch_id)] = payload
+
         if len(transplants) >= num_transplants:
             keepers = random.sample(list(transplants), num_transplants)
         else:
@@ -251,23 +257,36 @@ class CodeGenerationDataManager(DataManager):
     def get_eval_data(self):
         pass
 
-    def get_round_data(self):      
+    def get_round_data(self):
         if self.proposer_batch_size > 0:
-            try:            
-                proposer_data = self.backend.get(sub_key="proposer".encode())        
+            try:
+                proposer_data = self.backend.get(sub_key="proposer".encode())
                 proposer_data = prepare_proposer_batch(proposer_data, self.proposer_batch_size)
             except Exception as e:
                 get_logger().debug(f"Exception while getting proposer data: {e}")
                 proposer_data = []
         else:
             proposer_data = []
-        
+
         if self.local_batch_size > 0:
-            try:
-                local_data = next(self.local_dataset_iter)
-            except StopIteration:
-                self.local_dataset_iter = iter(self.local_dataset)
-                local_data = next(self.local_dataset_iter)
+            # MODIFICATION: Add dataset into methode Weighted Sampling
+            if self.use_weighted_sampling:
+                dataset_names = list(self.dataset_weights.keys())
+                weights = [self.dataset_weights[name] for name in dataset_names]
+                selected = random.choices(dataset_names, weights=weights, k=1)[0]
+                try:
+                    local_data = next(self.dataset_iters[selected])
+                except StopIteration:
+                    self.dataset_iters[selected] = iter(self.dataset_pool[selected])
+                    local_data = next(self.dataset_iters[selected])
+            else:
+                # FALLBACK ORIGIN
+                try:
+                    local_data = next(self.local_dataset_iter)
+                except StopIteration:
+                    self.local_dataset_iter = iter(self.local_dataset)
+                    local_data = next(self.local_dataset_iter)
+            
             local_data = prepare_local_batch(local_data)
         else:
             local_data = []
@@ -279,12 +298,11 @@ class CodeGenerationDataManager(DataManager):
         objs = []
         for agent_id in state:
             for batch_id in state[agent_id]:
-                node_idx = 0 # don't need to send each generation
+                node_idx = 0  # don't need to send each generation
                 node = state[agent_id][batch_id][node_idx]
                 proposal_raw = node.personal_states
                 dataset = node.environment_states['metadata']['dataset']
                 batch_rewards = rewards[agent_id][batch_id][node_idx]
-
                 if dataset != 'proposer':
                     continue
                 obj = {
@@ -297,8 +315,7 @@ class CodeGenerationDataManager(DataManager):
             self.backend.put(objs, sub_key="solver".encode())
         except Exception as e:
             get_logger().debug(f"Failed to send response: {e}")
-        
-        
+
 
 # Registry mapping dataset names to their respective mappers
 DATASET_MAPPERS = {
@@ -308,7 +325,6 @@ DATASET_MAPPERS = {
 
 def prepare_local_batch(batch) -> list[tuple[int, WorldState]]:
     original_dataset = batch.get('original_dataset', [])
-
     prompts = []
     tests = []
     for i, ds in enumerate(original_dataset):
@@ -316,17 +332,14 @@ def prepare_local_batch(batch) -> list[tuple[int, WorldState]]:
         if mapper is None:
             raise ValueError(f"No mapper found for dataset: {ds}. "
                            f"Available datasets: {list(DATASET_MAPPERS.keys())}")
-        
         prompt = mapper.map_prompt(batch, i)
         test = mapper.map_test(batch, i)
         prompts.append(prompt)
         tests.append(test)
-
     local_data = []
     for prompt, test, ds in zip(prompts, tests, original_dataset):
         mapper = DATASET_MAPPERS[ds]
         question = mapper.format_question(prompt, test)
-        
         env_state = {
             "question": question,
             "test": test,
@@ -339,7 +352,6 @@ def prepare_local_batch(batch) -> list[tuple[int, WorldState]]:
         )
         proposal_id = generate_md5_hash_id(env_state["question"])
         local_data.append([proposal_id, world_state])
-
     return local_data
 
 def prepare_proposer_batch(batch: dict[str, list[dict]], batch_size: int) -> list[tuple[int, WorldState]]:
@@ -350,7 +362,6 @@ def prepare_proposer_batch(batch: dict[str, list[dict]], batch_size: int) -> lis
             proposal_question = str(proposal['proposal_question'])[:MAX_PROPOSER_PROMPT_LENGTH]
             proposal_tests = str(proposal['proposal_tests'])[:MAX_PROPOSER_PROMPT_LENGTH]
             proposal_raw = str(proposal['proposal_raw'])[:MAX_PROPOSER_PROMPT_LENGTH]
-
             env_state = {
                 "question": proposal_question,
                 "test": proposal_tests,
@@ -362,12 +373,9 @@ def prepare_proposer_batch(batch: dict[str, list[dict]], batch_size: int) -> lis
                 personal_states=proposal_raw,
             )
             proposal_id = generate_md5_hash_id(env_state["question"])
-        
             proposer_data.append([proposal_id, world_state])
-
             if len(proposer_data) >= batch_size:
                 return proposer_data
-
     return proposer_data
 
 def parse_python_fence(text):
