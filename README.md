@@ -12,35 +12,35 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Trained%20with-Gensyn%20RL--Swarm-pink" alt="gensyn">
+  <a href="https://gensyn.ai"><img src="https://img.shields.io/badge/Trained%20with-Gensyn%20RL--Swarm-pink" alt="gensyn"></a>
   <a href="https://github.com/gensyn-ai/rl-swarm/releases"><img src="https://img.shields.io/github/v/release/gensyn-ai/rl-swarm?label=Version&color=green" alt="version"></a>
-  <img src="https://img.shields.io/badge/GGUF-Available-FF0069" alt="GGUF">
-  <img src="https://img.shields.io/badge/LLama.cpp-Compatible-orange" alt="llama.cpp">
-  <img src="https://img.shields.io/badge/🤗 Huggingface-Models-blue" alt="Huggingface">
+  <a href="https://huggingface.co/0xgr3y/Qwen2.5-Coder-0.5B-Instruct-Gensyn-Swarm-tall_tame_panther/tree/main"><img src="https://img.shields.io/badge/GGUF-Available-FF0069" alt="GGUF"></a>
+  <a href="https://github.com/ggerganov/llama.cpp"><img src="https://img.shields.io/badge/LLama.cpp-Compatible-orange" alt="llama.cpp"></a>
+  <a href="https://huggingface.co/0xgr3y/Qwen2.5-Coder-0.5B-Instruct-Gensyn-Swarm-tall_tame_panther"><img src="https://img.shields.io/badge/🤗%20Huggingface-Models-blue" alt="Huggingface"></a>
 </p>
 
 ---
 
-## Overview
+## **Overview**
 
-Our pick this model a continuously trained `Qwen2.5-Coder-0.5B-Instruct` fine-tuned using **Gensyn RL-Swarm** framework with **GRPO** *(Generalized Reward Policy Optimization)* and supported format **GGUF (llama.cpp)** for enhanced trained on logic, mathematical problem-solving & reasoning tasks capabilities. **Note: modify previous Gensyn v0.6.2-v0.6.4 the training same focuses**.
+Our pick an **experimental (advanced) mode** at this model a continuously trained `Qwen2.5-Coder-0.5B-Instruct` fine-tuned using **Gensyn RL-Swarm** framework with **GRPO (Group Relative Policy Optimization)** and supported format **GGUF (llama.cpp)** for enhanced code generation capabilities. **Note: Current training focuses on programming challenges with adaptive weighted sampling**.
 
-- **Agent ID:** [Huggingface GGUF](https://huggingface.co/0xgr3y/Qwen2.5-Coder-0.5B-Instruct-Gensyn-Swarm-tall_tame_panther)
+- **Agent ID:** [Huggingface LLModels](https://huggingface.co/0xgr3y/Qwen2.5-Coder-0.5B-Instruct-Gensyn-Swarm-tall_tame_panther)
 - **Training Status:** 🟢 LIVE - Model updates automatically every 5-10 minutes
-- **Auto-Sync GGUF Pipeline Status:** 🟢 LIVE - Commits update automatically every 1h-hourly
-- **Current Progress:** Round 10,610+ target 100,000 (10,61%)
+- **Auto-Sync GGUF Pipeline Status:** 🟢 LIVE - Commits update automatically every hourly
+- **Current Progress:** Round 13,054+ / 100,000 (13.05%)
 - **Framework Version:** Gensyn RL-Swarm (CodeZero) `v0.7.0`
 - **Contract Judge:** SwarmCoordinator `v0.4.2`
 - **GGUF Quantization:** Multiple quantized available `(F16, Q3_K_M, Q4_K_M, Q5_K_M, Q6_K)`
 
 > [!NOTE]
-> **ALWAYS LATEST UPDATE:** Currently in recent update Gensyn RL-Swarm is **CodeZero (Solvers, Proposers & Evaluators)**, This was modify config by me for Gensyn training LLmodels thats effective for any min-low vRAM GPU resources like **RTX Series 20xx, 30xx, 40xx, A1xx, A2xx, A4xx** is same optimize any swarm training (originally).
+> **ALWAYS LATEST PULL:** Currently in recent update Gensyn RL-Swarm is **CodeZero (Solvers, Proposers & Evaluators)**, This was modify configure experimental (advanced) mode by for Gensyn training model thats support for any min-low vRAM GPU resources like **RTX Series 20xx, 30xx, 40xx, A1xx, A2xx, A4xx** is same optimize any swarm training (originally).
 
 - **Proposers:** Generate coding problems and unit tests, adjusting difficulty dynamically based on solver performance. Proposers create challenges that adapt to the swarm's current capabilities, ensuring continuous learning opportunities.
 - **Solvers:** Attempt coding challenges, learn locally through RL, and share rollouts with peers. Solvers exchange solutions to promote diversity and accelerate collective learning across the network.
 - **Evaluators**: Frozen models that assess correctness and assign rewards. Evaluators use rule-based assessment to score submissions without executing code, ensuring safety and scalability.
 
-## Requirements
+## **Requirements**
 
 ![VPS](https://img.shields.io/badge/CPU/GPU_Server-232F3E?style=for-the-badge&logo=digitalocean&logoColor=red)
 ![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
@@ -62,31 +62,30 @@ Our pick this model a continuously trained `Qwen2.5-Coder-0.5B-Instruct` fine-tu
 
 ![photo_6271671078992153653_w](https://github.com/user-attachments/assets/adf9e6cc-1125-4a75-b000-cc1b0c1e1541)
 
-## Configure Modify
-- `rgym_exp/config/rg-swarm.yaml` → <mark>support low-vRAM GPU</mark>
-- `rgym_exp/src/datasets.yaml` → <mark>boost-rewards = weighted sampling composition</mark>
-- `run_rl_swarm.sh` → <mark>latest mark for compatible</mark>
-- `other configs` → <mark>latest mark for compatible</mark>
+## **Quick Configuration**
+- **Adaptive Sampling Strategy**
+- **Adaptive Threshold System**
+- **Data Quality Enhanced Implementation**
+- **Adaptive Reward System**: Dynamic quality enhanced and dataset weighting for optimal learning
+- **Multi-domain Coding**: Trained on MBPP and CodeContests datasets with adaptive sampling
 
-## Official Support Models
+The model is trained on a composite dataset with adaptive weighted sampling strategy
+
+| Dataset | Initial Weight | Adaptive Range | Focus Area |
+|---------|----------------|----------------|------------|
+| MBPP | 5 | 4-6 | Basic Python programming problems with test cases |
+| CodeContests | 5 | 4-6 | Competitive programming challenges |
+
+> For detail on Huggingface → <mark>[Qwen2.5-Coder-0.5B-Instruct-Gensyn-SwarmAgent-ID](https://huggingface.co/0xgr3y/Qwen2.5-Coder-0.5B-Instruct-Gensyn-Swarm-tall_tame_panther)</mark>
+
+## **Gensyn - Official Support Models**
 - `Qwen/Qwen2.5-Coder-0.5B-Instruct`  → <mark>Recommend Solver</mark>
 - `deepseek-ai/deepseek-coder-1.3b-instruct` → <mark>Proposers, Evaluators</mark>
 - `Qwen/Qwen2.5-Coder-1.5B-Instruct` → <mark>Proposers, Evaluators</mark>
 
-> The model is trained on a composite dataset (1,000 samples) with weighted sampling strategy
+## **Installation**
 
-| Dataset | Weight | Focus Area |
-|---------|--------|------------|
-| Propositional Logic | 7 | Logical reasoning, truth tables, Boolean operations |
-| Calendar Arithmetic | 6 | Date calculations, leap years, recurring events |
-| Decimal Arithmetic | 5 | Multi-term decimal operations with precision |
-| Base Conversion | 4 | Number system conversions (base 2-16) |
-| Fraction Simplification | 4 | GCD/LCM, fraction reduction |
-| Basic Arithmetic | 2 | Foundation operations with parentheses |
-
-## Installation Setup
-
-**1. Update System Packages**
+**II. Update System Packages**
 ```bash
 apt update && apt upgrade -y && \
 apt install screen curl ufw nload tree iptables git wget lz4 jq make gcc nano automake autoconf \
@@ -95,21 +94,21 @@ tar clang nethogs ncdu unzip build-essential pkg-config libssl-dev libleveldb-de
 speedtest-cli ca-certificates libffi-dev libsqlite3-dev -y
 ```
 
-**2. Install v22 Node.js - Npm - Yarn - Pm2**
-```
+**II. Install v22 Node.js - Npm - Yarn - Pm2**
+```bash
 source <(wget -qO- https://raw.githubusercontent.com/arcxteam/w-ai-wombo/main/nodejs.sh)
 ```
 
-**3. Clone Repository**
+**III. Clone Repository**
 ```bash
 git clone https://github.com/arcxteam/rl-swarm.git && cd rl-swarm
 ```
 
-## Running Gensyn RL-Swarm
+## **Running Gensyn RL-Swarm**
 
-### 1. CLI (Shell/sh)
+### **1. CLI (Shell/sh)**
 
-**A. If you run with <mark>OctaSpace GPU</mark> default Tmux/Termux sessions**
+**I. If you run with <mark>OctaSpace GPU</mark> default Tmux/Termux sessions**
 - Full comprehensif guide tips & trick read here [Octaspace](https://github.com/arcxteam/octa-rental-gpu)
 - Quick-1: Always rent with this template **UBUNTU 22.04 LTS** dont use another template
 - Quick-2: Always deploy in coloum **(Expose HTTP Ports)** input https port as **3000** will auto create localhost services for gensyn login
@@ -119,16 +118,12 @@ git clone https://github.com/arcxteam/rl-swarm.git && cd rl-swarm
 - Navigate sessions `scroll up ↑ down ↓ or click any sessions & then enter`
 - Close with run background `CTRL+B+D`
 
-**B. If you run with <mark>other cloud GPU</mark> use Screen sessions**
+**II. If you run with <mark>other cloud GPU</mark> use Screen sessions**
 - Create sessions `screen -S gensyn`
 - Close sessions `CTRL+A+D`
 - Go to sessions `screen -r gensyn`
 
-**C. Get into the `rl-swarm` directory**
-```
-cd rl-swarm
-```
-**D. Virtual Python & Run Gensyn Swarm**
+**III. Virtual Python & Run Gensyn Swarm**
 ```bash
 python3 -m venv .venv
 
@@ -139,14 +134,14 @@ source .venv/bin/activate
 ./run_rl_swarm.sh
 ```
 
-### 2. Docker (Container)
+### 2. **Docker (Container)**
 
-**A. Install Docker & Compose → <mark>if the cloud GPU was support & use Ubuntu VM</mark>**
+**I. Install Docker & Compose → <mark>if the cloud GPU was support & use Ubuntu VM</mark>**
 
 ```bash
 curl -sSL https://raw.githubusercontent.com/arcxteam/succinct-prover/refs/heads/main/docker.sh | bash
 ```
-**B. Install swarm build docker**
+**II. Install swarm build docker**
 * CPU
 ```bash
 docker compose run --rm --build -Pit swarm-cpu
@@ -157,7 +152,8 @@ docker compose run --rm --build -Pit swarm-cpu
 docker compose run --rm --build -Pit swarm-gpu
 ```
 
-## Open Gensyn Dashboard - Manual `localhost:3000`
+## **Open Gensyn Dashboard - Manual `localhost:3000`**
+
 - Open a new terminal
 - Install localtunnel
 ```
@@ -171,4 +167,36 @@ curl ifconfig.me && echo
 ```
 lt --port 3000
 ```
-**Visit the prompted url, and enter your password to access Gensyn login page**
+
+> **Visit the prompted url, and enter your password to access Gensyn login page**
+
+## **Available GGUF Quantization Formats**
+
+| Format | Size | Precision | Use Case | Download |
+|--------|------|-----------|----------|----------|
+| Safetensors (BF16) | 988 MB | BF16 | Full precision training/fine-tuning | `model.safetensors` |
+| GGUF F16 | 994 MB | FP16 | High quality inference | `Qwen2.5-Coder-0.5B-F16.gguf` |
+| GGUF Q6_K | 506 MB | 6-bit | High quality compression | `Qwen2.5-Coder-0.5B-Q6_K.gguf` |
+| GGUF Q5_K_M | 420 MB | 5-bit | Balanced quality/size | `Qwen2.5-Coder-0.5B-Q5_K_M.gguf` |
+| GGUF Q4_K_M | 398 MB | 4-bit | **Recommended** for production | `Qwen2.5-Coder-0.5B-Q4_K_M.gguf` |
+| GGUF Q3_K_M | 355 MB | 3-bit | Smallest, fastest | `Qwen2.5-Coder-0.5B-Q3_K_M.gguf` |
+
+> All GGUF formats are **llama.cpp compatible** and auto-updated hourly
+
+
+## **References**
+- **Gensyn Documentation**: https://docs.gensyn.ai/
+- **Gensyn GitHub**: https://github.com/gensyn-ai
+- **RL-Swarm Contracts**: https://github.com/gensyn-ai/rl-swarm-contracts
+- **Qwen2.5-Coder Model Card**: https://huggingface.co/Qwen/Qwen2.5-Coder-0.5B-Instruct
+- **MBPP Dataset**: https://huggingface.co/datasets/google-research-datasets/mbpp
+- **CodeContests Dataset**: https://huggingface.co/datasets/deepmind/code_contests
+- **arXiv:1910.09700**: ML Carbon Emissions methodology
+- **Community**: [Gensyn Discord](https://discord.gg/gensyn)
+
+---
+
+<div align="center">
+**Trained with 🩷 using Gensyn RL-Swarm**
+[![Gensyn](https://img.shields.io/badge/Powered%20by-Gensyn%20AI-pink?style=for-the-badge)](https://gensyn.ai)
+</div>
