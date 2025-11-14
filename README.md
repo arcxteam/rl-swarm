@@ -4,7 +4,7 @@
        alt="logo-gensyn">
 </p>
 
-<h1 align="center">Gensyn RL-Swarm: Training & GGUF Inference for Quantized LLMs</h1>
+<h1 align="center">Gensyn RL-Swarm: Training & GGUF Quantized LLMs for Inferences</h1>
 
 <p align="center">
   <strong>A Comprehensive Guide to Running a Gensyn RL-Swarm Training</strong><br>
@@ -34,7 +34,7 @@ Our pick an **experimental (advanced) mode** at this model a continuously traine
 - **GGUF Quantization:** Multiple quantized available `(F16, Q3_K_M, Q4_K_M, Q5_K_M, Q6_K)`
 
 > [!NOTE]
-> **ALWAYS LATEST PULL:** Currently in recent update Gensyn RL-Swarm is **CodeZero (Solvers, Proposers & Evaluators)**, This was modify configure experimental (advanced) mode by for Gensyn training model thats support for any min-low vRAM GPU resources like **RTX Series 20xx, 30xx, 40xx, A1xx, A2xx, A4xx** is same optimize any swarm training (originally).
+> **ALWAYS LATEST PULL:** Currently in recent update Gensyn RL-Swarm is **CodeZero (Solvers, Proposers & Evaluators)**, This was modify configure experimental (advanced) mode by for Gensyn training model thats support for any min-low vRAM GPU resources like **RTX Series 20xx, 30xx, 40xx, A1xx, A2xx, A4xx** is same optimize into swarm training (originally).
 
 - **Proposers:** Generate coding problems and unit tests, adjusting difficulty dynamically based on solver performance. Proposers create challenges that adapt to the swarm's current capabilities, ensuring continuous learning opportunities.
 - **Solvers:** Attempt coding challenges, learn locally through RL, and share rollouts with peers. Solvers exchange solutions to promote diversity and accelerate collective learning across the network.
@@ -58,7 +58,7 @@ Our pick an **experimental (advanced) mode** at this model a continuously traine
 
 > **Note: Its just a imagine, you can choose anything your take. But i can sharing any tips if your rent cloud GPU to [https://octa.space](https://octa.space/?ref=rTXHXwn7D96) I'm not promoter choose this my principals rent any low-cost, its very cheaper than rental GPU competitors. For tips & trick read... https://github.com/arcxteam/octa-rental-gpu**
 
-> **Basically, if you rent a GPU with a minimum of 6GB or even 8-12-16-24GB of VRAM, you can run other nodes because only 4-5GB of VRAM will be used for this GENSYN with the configuration I modified.**
+> **Basically, if you rent a GPU with a minimum of 6GB or even 8-12-16-24GB of VRAM, you can run other nodes because only 4-5GB of VRAM will be used for this GENSYN with the configure modified.**
 
 ![photo_6271671078992153653_w](https://github.com/user-attachments/assets/adf9e6cc-1125-4a75-b000-cc1b0c1e1541)
 
@@ -69,21 +69,21 @@ Our pick an **experimental (advanced) mode** at this model a continuously traine
 - **Adaptive Reward System**: Dynamic quality enhanced and dataset weighting for optimal learning
 - **Multi-domain Coding**: Trained on MBPP and CodeContests datasets with adaptive sampling
 
-The model is trained on a composite dataset with adaptive weighted sampling strategy
+The models trained on a composite dataset with adaptive weighted sampling strategy
 
 | Dataset | Initial Weight | Adaptive Range | Focus Area |
 |---------|----------------|----------------|------------|
 | MBPP | 5 | 4-6 | Basic Python programming problems with test cases |
 | CodeContests | 5 | 4-6 | Competitive programming challenges |
 
-> For detail on Huggingface → <mark>[Qwen2.5-Coder-0.5B-Instruct-Gensyn-SwarmAgent-ID](https://huggingface.co/0xgr3y/Qwen2.5-Coder-0.5B-Instruct-Gensyn-Swarm-tall_tame_panther)</mark>
+> For detail on Huggingface → <mark>[Qwen2.5-Coder-0.5B-Instruct-Gensyn-Swarm-My-Agent-ID](https://huggingface.co/0xgr3y/Qwen2.5-Coder-0.5B-Instruct-Gensyn-Swarm-tall_tame_panther)</mark>
 
 ## **Gensyn - Official Support Models**
-- `Qwen/Qwen2.5-Coder-0.5B-Instruct`  → <mark>Recommend Solver</mark>
-- `deepseek-ai/deepseek-coder-1.3b-instruct` → <mark>Proposers, Evaluators</mark>
-- `Qwen/Qwen2.5-Coder-1.5B-Instruct` → <mark>Proposers, Evaluators</mark>
+- `Qwen/Qwen2.5-Coder-0.5B-Instruct`  → <mark>**Recommend Solver**</mark>
+- `deepseek-ai/deepseek-coder-1.3b-instruct` → **Proposers, Evaluators**
+- `Qwen/Qwen2.5-Coder-1.5B-Instruct` → **Proposers, Evaluators**
 
-## **Installation**
+## **Quick Launch**
 
 **II. Update System Packages**
 ```bash
@@ -108,22 +108,22 @@ git clone https://github.com/arcxteam/rl-swarm.git && cd rl-swarm
 
 ### **1. CLI (Shell/sh)**
 
-**I. If you run with <mark>OctaSpace GPU</mark> default Tmux/Termux sessions**
+**I. If run with <mark>OctaSpace GPU</mark> default Tmux/Termux sessions**
 - Full comprehensif guide tips & trick read here [Octaspace](https://github.com/arcxteam/octa-rental-gpu)
-- Quick-1: Always rent with this template **UBUNTU 22.04 LTS** dont use another template
-- Quick-2: Always deploy in coloum **(Expose HTTP Ports)** input https port as **3000** will auto create localhost services for gensyn login
+- Quick-1: Always rent with this template **UBUNTU 22.04/24.04 LTS** dont use another template
+- Quick-2: Always deploy in coloum **(Expose HTTP Ports)** input https port as **3000** will auto create localhost to access gensyn login
 - Create new sessions `CTRL+B+C`
 - Go to sessions `tmux attach`
 - List sessions `CTRL+B+W`
 - Navigate sessions `scroll up ↑ down ↓ or click any sessions & then enter`
 - Close with run background `CTRL+B+D`
 
-**II. If you run with <mark>other cloud GPU</mark> use Screen sessions**
+**II. If run with <mark>other cloud GPU</mark> use Screen sessions**
 - Create sessions `screen -S gensyn`
 - Close sessions `CTRL+A+D`
 - Go to sessions `screen -r gensyn`
 
-**III. Virtual Python & Run Gensyn Swarm**
+**III. Virtual Python & Running**
 ```bash
 python3 -m venv .venv
 
@@ -134,14 +134,14 @@ source .venv/bin/activate
 ./run_rl_swarm.sh
 ```
 
-### 2. **Docker (Container)**
+### **2. Docker (Container)**
 
 **I. Install Docker & Compose → <mark>if the cloud GPU was support & use Ubuntu VM</mark>**
 
 ```bash
 curl -sSL https://raw.githubusercontent.com/arcxteam/succinct-prover/refs/heads/main/docker.sh | bash
 ```
-**II. Install swarm build docker**
+**II. Setup build on docker**
 * CPU
 ```bash
 docker compose run --rm --build -Pit swarm-cpu
@@ -152,7 +152,7 @@ docker compose run --rm --build -Pit swarm-cpu
 docker compose run --rm --build -Pit swarm-gpu
 ```
 
-## **Open Gensyn Dashboard - Manual `localhost:3000`**
+## **Gensyn Dashboard - Manual `localhost:3000`**
 
 - Open a new terminal
 - Install localtunnel
@@ -170,7 +170,7 @@ lt --port 3000
 
 > **Visit the prompted url, and enter your password to access Gensyn login page**
 
-## **Available GGUF Quantization Formats**
+## **Available GGUF Quantization**
 
 | Format | Size | Precision | Use Case | Download |
 |--------|------|-----------|----------|----------|
@@ -181,7 +181,7 @@ lt --port 3000
 | GGUF Q4_K_M | 398 MB | 4-bit | **Recommended** for production | `Qwen2.5-Coder-0.5B-Q4_K_M.gguf` |
 | GGUF Q3_K_M | 355 MB | 3-bit | Smallest, fastest | `Qwen2.5-Coder-0.5B-Q3_K_M.gguf` |
 
-> All GGUF formats are **llama.cpp compatible** and auto-updated hourly
+> All GGUF formats are **llama.cpp is compatible** ready to use **Inferences chat** and auto-update be hourly.
 
 
 ## **References**
@@ -197,6 +197,9 @@ lt --port 3000
 ---
 
 <div align="center">
+  
 **Trained with 🩷 using Gensyn RL-Swarm**
+
 [![Gensyn](https://img.shields.io/badge/Powered%20by-Gensyn%20AI-pink?style=for-the-badge)](https://gensyn.ai)
+
 </div>
