@@ -60,13 +60,38 @@ echo_red() {
 
 ROOT_DIR="$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)"
 
-# WANDB CONFIG: Load environment variables from .env if exists
+# WANDB CONFIG: Load environment variables from .env
 if [ -f "$ROOT_DIR/.env" ]; then
     # Read .env and export all non-comment, non-empty lines
     set -a
     source "$ROOT_DIR/.env"
     set +a
     echo_green ">> Loaded W&B configuration from .env"
+    
+    # Auto-configure W&B settings files if WANDB_MODE is online
+    if [ -n "$WANDB_MODE" ] && [ "$WANDB_MODE" = "online" ]; then
+        # Create directories if they don't exist
+        mkdir -p ~/.config/wandb
+        mkdir -p "$ROOT/logs/wandb/wandb"
+        
+        # Write global W&B settings
+        cat > ~/.config/wandb/settings << WBEOF
+[default]
+mode = ${WANDB_MODE}
+entity = ${WANDB_ENTITY}
+project = ${WANDB_PROJECT}
+WBEOF
+        
+        # Write local W&B settings
+        cat > "$ROOT/logs/wandb/wandb/settings" << WBEOF
+[default]
+mode = ${WANDB_MODE}
+entity = ${WANDB_ENTITY}
+project = ${WANDB_PROJECT}
+WBEOF
+        
+        echo_green ">> W&B configured for online sync to ${WANDB_ENTITY}/${WANDB_PROJECT}"
+    fi
 fi
 
 # Function to clean up the server process upon exit
