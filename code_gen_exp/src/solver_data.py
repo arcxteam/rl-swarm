@@ -87,7 +87,7 @@ class CodeGenerationDataManager(DataManager):
         self.performance_history = {'mbpp': [], 'code_contests': []}
         self.performance_window = kwargs.get("performance_window", 10)
         self.adaptation_threshold = kwargs.get("adaptation_threshold", 0.15)
-        self.dataset_weights = {'mbpp': 5, 'code_contests': 5}  # Start balanced
+        self.dataset_weights = {'mbpp': 6, 'code_contests': 4}  # Start balanced
         self.round_count = 0  # Track rounds for adaptation
 
     def initialize(self, backend: HivemindBackend):
@@ -272,7 +272,7 @@ class CodeGenerationDataManager(DataManager):
             len(self.performance_history['code_contests']) < min_required_samples):
             return
         
-        # Calculate recent average perform
+        # Calculate recent average perform each dataset
         mbpp_perf = 0.0
         if len(self.performance_history['mbpp']) > 0:
             recent_mbpp = self.performance_history['mbpp'][-self.performance_window:]
@@ -290,13 +290,13 @@ class CodeGenerationDataManager(DataManager):
         if abs(performance_diff) > self.adaptation_threshold:
             if performance_diff > 0:
                 # MBPP, increase CodeContests weight
-                self.dataset_weights = {'mbpp': 4, 'code_contests': 6}
+                self.dataset_weights = {'mbpp': 5, 'code_contests': 5}
             else:
                 # CodeContests, increase MBPP weight
-                self.dataset_weights = {'mbpp': 6, 'code_contests': 4}
+                self.dataset_weights = {'mbpp': 5, 'code_contests': 5}
         else:
             # Keep balanced if performance is similar
-            self.dataset_weights = {'mbpp': 5, 'code_contests': 5}
+            self.dataset_weights = {'mbpp': 6, 'code_contests': 4}
         
         get_logger().info(f"Updated dataset weights: {self.dataset_weights} based on performance diff: {performance_diff:.3f}")
 
@@ -375,9 +375,16 @@ class CodeGenerationDataManager(DataManager):
                 dataset = node.environment_states['metadata']['dataset']
                 batch_rewards = rewards[agent_id][batch_id][node_idx]
 
+                # Correction: Only send for dataset "proposer"
                 if dataset != 'proposer':
                     continue
                 
+                # MODIFY/Correction: Reward is list of float
+                if not isinstance(batch_rewards, list):
+                    batch_rewards = [float(batch_rewards)]
+                else:
+                    batch_rewards = [float(r) for r in batch_rewards]
+
                 # MODIFY: Counting perform for adaptive
                 if self.use_adaptive_sampling and batch_rewards:
                     avg_reward = sum(batch_rewards) / len(batch_rewards)
