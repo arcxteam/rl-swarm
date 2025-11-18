@@ -4,7 +4,7 @@
        alt="logo-gensyn">
 </p>
 
-<h1 align="center">Gensyn RL-Swarm: Training & GGUF Quantized LLMs for Inferences</h1>
+<h1 align="center">Gensyn RL-Swarm: Training & GGUF Quantized LLMs for Inference</h1>
 
 <p align="center">
   <strong>A Comprehensive Guide to Running a Gensyn RL-Swarm Training</strong><br>
@@ -19,6 +19,12 @@
   <a href="https://huggingface.co/0xgr3y/Qwen2.5-Coder-0.5B-Instruct-Gensyn-Swarm-tall_tame_panther"><img src="https://img.shields.io/badge/🤗%20Huggingface-Models-blue" alt="Huggingface"></a>
 </p>
 
+<div align="center">
+
+[![Gensyn](https://img.shields.io/badge/Powered%20by-Gensyn%20AI-pink?style=for-the-badge)](https://gensyn.ai)
+
+</div>
+
 ---
 
 ## **Overview**
@@ -28,13 +34,13 @@ Our pick an **experimental (advanced) mode** at this model a continuously traine
 - **Agent ID:** [Huggingface LLModels](https://huggingface.co/0xgr3y/Qwen2.5-Coder-0.5B-Instruct-Gensyn-Swarm-tall_tame_panther)
 - **Training Status:** 🟢 LIVE - Model updates automatically every 5-10 minutes
 - **Auto-Sync GGUF Pipeline Status:** 🟢 LIVE - Commits update automatically every hourly
-- **Current Progress:** Round 13,054+ / 100,000 (13.05%)
+- **Current Progress:** Round 14,854+ / 100,000 (14.85%)
 - **Framework Version:** Gensyn RL-Swarm (CodeZero) `v0.7.0`
 - **Contract Judge:** SwarmCoordinator `v0.4.2`
 - **GGUF Quantization:** Multiple quantized available `(F16, Q3_K_M, Q4_K_M, Q5_K_M, Q6_K)`
 
 > [!NOTE]
-> **ALWAYS LATEST PULL:** Currently in recent update Gensyn RL-Swarm is **CodeZero (Solvers, Proposers & Evaluators)**, This was modify configure experimental (advanced) mode by for Gensyn training model thats support for any min-low vRAM GPU resources like **RTX Series 20xx, 30xx, 40xx, A1xx, A2xx, A4xx** is same optimize into swarm training (originally).
+> **LATEST PULL:** Currently in recent update Gensyn RL-Swarm is **CodeZero (Solvers, Proposers & Evaluators)**, This was modify configure experimental (advanced) mode by for Gensyn training model thats support for any min-low vRAM GPU resources like **RTX Series 20xx, 30xx, 40xx, A1xx, A2xx, A4xx** is same optimize into swarm training (originally).
 
 - **Proposers:** Generate coding problems and unit tests, adjusting difficulty dynamically based on solver performance. Proposers create challenges that adapt to the swarm's current capabilities, ensuring continuous learning opportunities.
 - **Solvers:** Attempt coding challenges, learn locally through RL, and share rollouts with peers. Solvers exchange solutions to promote diversity and accelerate collective learning across the network.
@@ -69,12 +75,12 @@ Our pick an **experimental (advanced) mode** at this model a continuously traine
 - **Adaptive Reward System**: Dynamic quality enhanced and dataset weighting for optimal learning
 - **Multi-domain Coding**: Trained on MBPP and CodeContests datasets with adaptive sampling
 
-The models trained on a composite dataset with adaptive weighted sampling strategy
+The model is trained on a composite dataset with adaptive weighted sampling strategy
 
-| Dataset | Initial Weight | Adaptive Range | Focus Area |
-|---------|----------------|----------------|------------|
-| MBPP | 5 | 4-6 | Basic Python programming problems with test cases |
-| CodeContests | 5 | 4-6 | Competitive programming challenges |
+| Dataset | Initial Weight | Adaptive Range | Focus Area | Stream Synthesis |
+|---------|----------------|----------------|------------| ------------|
+| MBPP | 5 | 5-6 | Basic Python programming problems with test cases | [google-research-datasets/mbpp](https://huggingface.co/datasets/google-research-datasets/mbpp) |
+| CodeContests | 5 | 4-5 | Competitive programming challenges | [deepmind/code_contests](https://huggingface.co/datasets/deepmind/code_contests) |
 
 > For detail on Huggingface → <mark>[Qwen2.5-Coder-0.5B-Instruct-Gensyn-Swarm-My-Agent-ID](https://huggingface.co/0xgr3y/Qwen2.5-Coder-0.5B-Instruct-Gensyn-Swarm-tall_tame_panther)</mark>
 
@@ -85,7 +91,7 @@ The models trained on a composite dataset with adaptive weighted sampling strate
 
 ## **Quick Launch**
 
-**II. Update System Packages**
+**I. Update System Packages**
 ```bash
 apt update && apt upgrade -y && \
 apt install screen curl ufw nload tree iptables git wget lz4 jq make gcc nano automake autoconf \
