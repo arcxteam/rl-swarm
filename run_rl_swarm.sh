@@ -60,6 +60,15 @@ echo_red() {
 
 ROOT_DIR="$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)"
 
+# WANDB CONFIG: Load environment variables from .env if exists
+if [ -f "$ROOT_DIR/.env" ]; then
+    # Read .env and export all non-comment, non-empty lines
+    set -a
+    source "$ROOT_DIR/.env"
+    set +a
+    echo_green ">> Loaded W&B configuration from .env"
+fi
+
 # Function to clean up the server process upon exit
 cleanup() {
     echo_green ">> Shutting down trainer..."
