@@ -19,6 +19,10 @@ class RewardsOllamaConfig:
     model: str = "qwen2.5-coder:1.5b-instruct"
     temperature: float = 0.0
     num_predict: int = 512
+    # MODIFY: Add parameter for adavtive system reward
+    use_quality_bonus: bool = True
+    quality_bonus_weight: float = 0.05
+    use_adaptive_threshold: bool = True
 
 
 class CodeGenerationRewards:
@@ -32,7 +36,7 @@ class CodeGenerationRewards:
         
         # MODIFY: Add parameter for adavtive system reward
         self.use_quality_bonus = ollama_config.use_quality_bonus if hasattr(ollama_config, 'use_quality_bonus') else True
-        self.quality_bonus_weight = ollama_config.quality_bonus_weight if hasattr(ollama_config, 'quality_bonus_weight') else 0.1
+        self.quality_bonus_weight = ollama_config.quality_bonus_weight if hasattr(ollama_config, 'quality_bonus_weight') else 0.05
         self.use_adaptive_threshold = ollama_config.use_adaptive_threshold if hasattr(ollama_config, 'use_adaptive_threshold') else True
         self.performance_history = []
         self.performance_window = 10  # Track last 10 rounds
@@ -86,15 +90,15 @@ class CodeGenerationRewards:
         
         # Documentation ++
         if '"""' in parsed_code or "'''" in parsed_code:
-            bonus += 0.05
+            bonus += 0.025
         
         # Structure ++
         if "def " in parsed_code and "return" in parsed_code:
-            bonus += 0.03
+            bonus += 0.015
         
         # Algorithmic efficiency ++ bonus (simple heuristic)
         if "for " in parsed_code and "if " in parsed_code:
-            bonus += 0.02
+            bonus += 0.01
         
         # Scale with base reward to avoid inflation
         return min(bonus, base_reward * self.quality_bonus_weight)
@@ -116,9 +120,9 @@ class CodeGenerationRewards:
         if len(self.performance_history) >= 5:
             recent_avg = sum(self.performance_history[-5:]) / 5
             if recent_avg > 0.8:
-                self.adaptation_threshold = min(0.2, self.adaptation_threshold * 1.1)
+                self.adaptation_threshold = min(0.2, self.adaptation_threshold * 1.02)
             elif recent_avg < 0.4:
-                self.adaptation_threshold = max(0.05, self.adaptation_threshold * 0.9)
+                self.adaptation_threshold = max(0.05, self.adaptation_threshold * 0.95)
 
     def reward_fn(self, dataset, solutions, unittests, question):
         rewards = []
