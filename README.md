@@ -158,6 +158,34 @@ docker compose run --rm --build -Pit swarm-cpu
 docker compose run --rm --build -Pit swarm-gpu
 ```
 
+### **3. WandB Online + CLI Run**
+
+**I. Get API key: https://wandb.ai/authorize**
+**II. Create new Project and edit this or nano .env**
+
+```bash
+# Create .env file
+cat > .env << 'EOF'
+WANDB_MODE=online
+WANDB_API_KEY=YOUR_API_KEY
+WANDB_ENTITY=YOUR_TEAM_OR_USERNAME
+WANDB_PROJECT=YOUR_PROJECT_NAME
+EOF
+```
+
+**III. Execute script**
+
+```bash
+chmod +x wandb_run_rl_swarm.sh
+```
+
+**IV. Running***
+
+```bash
+wandb online
+./wandb_run_rl_swarm.sh
+```
+
 ## **Gensyn Dashboard - Manual `localhost:3000`**
 
 - Open a new terminal
