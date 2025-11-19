@@ -31,7 +31,7 @@ if [ -n "$DOCKER" ]; then
     )
 
     for volume in ${volumes[@]}; do
-        chown -R 1001:1001 $volume
+        sudo chown -R 1001:1001 $volume
     done
 fi
 
@@ -59,40 +59,6 @@ echo_red() {
 }
 
 ROOT_DIR="$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)"
-
-# WANDB CONFIG: Load environment variables from .env
-if [ -f "$ROOT_DIR/.env" ]; then
-    # Read .env and export all non-comment, non-empty lines
-    set -a
-    source "$ROOT_DIR/.env"
-    set +a
-    echo_green ">> Loaded W&B configuration from .env"
-    
-    # Auto-configure W&B settings files if WANDB_MODE is online
-    if [ -n "$WANDB_MODE" ] && [ "$WANDB_MODE" = "online" ]; then
-        # Create directories if they don't exist
-        mkdir -p ~/.config/wandb
-        mkdir -p "$ROOT/logs/wandb/wandb"
-        
-        # Write global W&B settings
-        cat > ~/.config/wandb/settings << WBEOF
-[default]
-mode = ${WANDB_MODE}
-entity = ${WANDB_ENTITY}
-project = ${WANDB_PROJECT}
-WBEOF
-        
-        # Write local W&B settings
-        cat > "$ROOT/logs/wandb/wandb/settings" << WBEOF
-[default]
-mode = ${WANDB_MODE}
-entity = ${WANDB_ENTITY}
-project = ${WANDB_PROJECT}
-WBEOF
-        
-        echo_green ">> W&B configured for online sync to ${WANDB_ENTITY}/${WANDB_PROJECT}"
-    fi
-fi
 
 # Function to clean up the server process upon exit
 cleanup() {
@@ -153,9 +119,9 @@ if [ "$CONNECT_TO_TESTNET" = true ]; then
         # Detect Ubuntu (including WSL Ubuntu) and install Yarn accordingly
         if grep -qi "ubuntu" /etc/os-release 2> /dev/null || uname -r | grep -qi "microsoft"; then
             echo "Detected Ubuntu or WSL Ubuntu. Installing Yarn via apt..."
-            curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-            echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-            apt update && apt install -y yarn
+            curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+            echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+            sudo apt update && sudo apt install -y yarn
         else
             echo "Yarn not found. Installing Yarn globally with npm (no profile edits)…"
             # This lands in $NVM_DIR/versions/node/<ver>/bin which is already on PATH
@@ -275,7 +241,7 @@ fi
 
 if [ -n "$DOCKER" ]; then
     # Make it easier to edit the configs on Linux systems.
-    chmod -R 0777 /home/gensyn/rl_swarm/configs
+    sudo chmod -R 0777 /home/gensyn/rl_swarm/configs
 fi
 
 echo_green ">> Done!"
